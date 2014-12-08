@@ -1,10 +1,20 @@
-﻿using System;
+﻿using azmobService.Photo;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
+using mpbdmService.DataObjects;
+using mpbdmService.Models;
+using NPOI.HSSF.UserModel;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using System.Configuration;
+
 
 namespace mpbdmService.Controllers
 {
@@ -22,9 +32,9 @@ namespace mpbdmService.Controllers
             return "value";
         }
 
-        public async Task<HttpResponseMessage> Post()
+        public async Task<HttpResponseMessage> Post( string groupsId )
         {
-
+            
             CloudStorageAccount acc = CloudStorageAccount.Parse(ConfigurationManager.ConnectionStrings["Azure"].ConnectionString);
             CloudBlobClient blobClient = acc.CreateCloudBlobClient();
             CloudBlobContainer photoContainer = blobClient.GetContainerReference("temp");
@@ -51,7 +61,7 @@ namespace mpbdmService.Controllers
 
 
                 //FileStream fs = new FileStream(url, FileMode.Open, FileAccess.Read);
-                HttpClient cl = new HttpClient();
+                //HttpClient cl = new HttpClient();
                 Stream ss = new MemoryStream();
                 blob.DownloadToStream(ss);
 
@@ -60,27 +70,27 @@ namespace mpbdmService.Controllers
                 HSSFSheet sheet = (HSSFSheet)templateWorkbook.GetSheet("Sheet1");
 
 
-                azmobtestContext db = new azmobtestContext();
+                mpbdmContext db = new mpbdmContext();
                 for (int i = 1; true; i++)
                 {
                     var row = sheet.GetRow(i);
                     if (row == null) break;
 
-                    Contact cont = new Contact();
+                    Contacts cont = new Contacts();
                     cont.FirstName = row.GetCell(0).RichStringCellValue.String;
                     cont.LastName = row.GetCell(1).RichStringCellValue.String;
                     cont.Email = row.GetCell(2).RichStringCellValue.String;
                     cont.Phone = row.GetCell(3).NumericCellValue.ToString();
-                    cont.GroupID = row.GetCell(4).RichStringCellValue.String;
+                    cont.GroupsID = ( groupsId == null ) ? row.GetCell(4).RichStringCellValue.String : groupsId;
                     cont.Id = Guid.NewGuid().ToString();
                     cont.Deleted = false;
                     cont.Visible = true;
 
-                    var chk = db.Set<Contact>().Where(s => s.Email == cont.Email && s.LastName == cont.LastName).FirstOrDefault();
+                    var chk = db.Set<Contacts>().Where(s => s.Email == cont.Email && s.LastName == cont.LastName).FirstOrDefault();
                     if (chk != null)
                         continue;
 
-                    db.Set<Contact>().Add(cont);
+                    db.Set<Contacts>().Add(cont);
 
                 }
                 try
