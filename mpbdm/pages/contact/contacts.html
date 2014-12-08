@@ -1,0 +1,45 @@
+﻿{{msg}}
+<div class="row" ng-init="sync()">
+    <div class="col-xs-12 text-center">
+        <button class="btn btn-success" ng-click="sync();">Synchronize</button>
+        <a ng-href="#/contacts/insert" class="btn btn-primary">Insert new Contact</a>
+    </div>
+</div>
+
+<ul class="userlist" ng-repeat="contact in contacts | filter : myGroupId : groupID">
+    <li>
+        <div class="row">
+            <div class="col-xs-6">
+                <a ng-href="#/contacts/{{contact.id}}">
+                    <img src="images/photos/thumb1.png" alt="" class="pull-left">
+                    <div class="uinfo">
+                        <h5>{{contact.firstName}} {{contact.lastName}}</h5>
+                        <span class="">{{contact.email}}</span>
+                        <span>phone: {{contact.phone}}</span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-xs-2">
+                <a ng-href="#/contacts/{{contact.id}}" class="btn btn-primary">Edit</a>
+            </div>
+            <div class="col-xs-push-1 col-xs-2">
+                <button class="btn btn-danger" ng-click="deleteContact(contact);">Delete</button>
+            </div>
+        </div>
+    </li>
+</ul>
+
+<!--<div>
+<div class="contact" ng-repeat="contact in contacts | filter : contactId : groupID">
+    <img ng-src="imgs/profile_img.png" />
+    <ul>
+        <li>{{contact.firstName}}</li>
+        <li>{{contact.lastName}}</li>
+        <li>{{contact.email}}</li>
+        <li>{{contact.phone}}</li>
+    </ul>
+    <div class="commands">
+        <a ng-href="#/contacts/{{contact.id}}">Edit</a>
+    </div>
+</div>
+</div>-->

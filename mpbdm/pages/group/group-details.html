@@ -1,0 +1,38 @@
+﻿<div class="contact-details">
+    <form class="form-horizontal" role="form" ng-repeat="group in groups | filter : groupId : id" ng-submit="editGroup(group);" novalidate>
+        <div class="form-group">
+            <label for="name" class="col-xs-4 control-label">Name</label>
+            <div class="col-xs-8">
+                <input type="text" name="name" id="name" value="{{group.name}}" class="form-control input-block-level" placeholder="Name" ng-model="group.name" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="lastName" class="col-xs-4 control-label">Address</label>
+            <div class="col-xs-8">
+                <input type="text" name="lastName" id="lastName" value="{{group.address}}" class="form-control input-block-level" placeholder="Address" ng-model="group.address" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="text-center">
+                <button type="submit" class="btn btn-success">Edit Group</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!--<div class="group-details">
+    <form class="form-horizontal" role="form" ng-repeat="group in groups | filter : groupId : id" ng-submit="editGroup(group);" novalidate>
+        <div class="form-group">
+            <label for="name" class="control-label">Name</label>
+                <input type="text" name="name" id="name" value="{{group.name}}" class="form-control" placeholder="Name" ng-model="group.name" />
+        </div>
+        <div class="form-group">
+            <label for="address" class="control-label">Address</label>
+            <input type="text" name="address" id="address" value="{{group.address}}" placeholder="Address" ng-model="group.address" />
+        </div>
+        <div class="form-group">
+                <button type="submit" class="btn btn-default">Edit</button>
+        </div>
+    </form>
+</div>-->
+

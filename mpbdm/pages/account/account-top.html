@@ -1,0 +1,20 @@
+﻿<div class="userloggedinfo">
+    <img src="images/photos/thumb1.png" alt="" ng-show="isLoggedIn()" />
+    <div class="userinfo" ng-show="isLoggedIn()">
+        <h5>{{firstName}} {{lastName}}</h5>
+        <ul>
+            <li><a href="#">Edit Profile</a></li>
+            <li><a href="#">Account Settings</a></li>
+            <!--<li><a href="index.html">Sign Out</a></li>-->
+            <li>
+                <div id="logged-in">
+                    <button class="btn-xs btn-info" id="log-out" ng-click="logOut();">Log out</button>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div id="logged-out" ng-hide="isLoggedIn();">
+        You are not logged in.
+        <button class="btn btn-info" ng-click="logIn();">Log in</button>
+    </div>
+</div>

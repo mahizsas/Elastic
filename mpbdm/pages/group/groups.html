@@ -1,0 +1,74 @@
+﻿ 
+<div class="row" ng-init="sync()">
+    <div class="col-xs-12">
+        {{msg}}
+    </div>
+    <div class="col-xs-12 text-center">
+        Order by:
+    </div>
+    <div class="col-xs-12 text-center">
+        <button class="btn btn-success" ng-click="sync();">Synchronize</button>
+
+        <button class="btn btn-info" ng-click="order = 'name';reverse = false;">Name</button>
+        <button class="btn btn-info" ng-click="order = 'address';reverse = false;">Address</button>
+        <button class="btn btn-info" ng-click="reverse = ! reverse;">Reverse</button>
+
+        <a ng-href="#/group/insert" class="btn btn-primary">Insert new Group</a>
+    </div>
+</div>
+    
+<hr />
+   
+    
+
+<ul class="userlist" ng-repeat="group in groups | orderBy : order : reverse | filter : groupId : id ">
+    <li>
+            
+        <div class="row">
+            <div class="col-md-6 col-xs-12" style="height:50px;">
+                <a href="" ng-href="#/group/{{group.id}}">
+                    <img src="imgs/profile_img.png" alt="" class="pull-left">
+                    <div class="uinfo">
+                        <h5>{{group.name}}</h5>
+                        <span class="">{{group.address}}</span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-2 col-xs-2">
+                <a ng-href="#/group/{{group.id}}/contacts" class="btn btn-primary">See all Contacts</a>
+            </div>
+            <div class="col-md-2 col-xs-2">
+                <a ng-href="#/group/{{group.id}}" class="btn btn-primary">Edit Group</a>
+            </div>
+            <div class="col-md-2 col-xs-2">
+                <button class="btn btn-danger" ng-click="deleteGroup(group);">Delete Group</button>
+            </div>
+        </div>            
+    </li>
+</ul>
+
+
+
+
+<!--<div>
+    {{msg}}
+    <button ng-click="sync();">Synchronize</button>
+    <button ng-click="order = 'name';reverse = false;">Name</button>
+    <button ng-click="order = 'address';reverse = false;">Address</button>
+    <button ng-click="reverse = ! reverse;">Reverse</button>
+    <a ng-href="#/group/insert">Insert</a>
+
+    <br />
+    <div class="group" ng-repeat="group in groups | orderBy : order : reverse | filter : groupId : id ">
+        <img ng-src="imgs/profile_img.png" />
+        <ul>
+            <li>{{group.name}}</li>
+            <li>{{group.address}}</li>
+        </ul>
+        <div class="commands">
+            <a href="" ng-href="#/group/{{group.id}}/contacts">Contacts</a>
+            <br />
+            <a href="" ng-href="#/group/{{group.id}}">Edit</a>
+        </div>
+    </div>
+</div>-->

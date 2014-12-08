@@ -1,0 +1,33 @@
+﻿<div class="contact-details">
+    <form class="form-horizontal" role="form" ng-repeat="contact in contacts | filter : myGroupId : groupID" ng-submit="editContact(contact);" novalidate>
+        <div class="form-group">
+            <label for="firstName" class="col-xs-4 control-label">First Name</label>
+            <div class="col-xs-8">
+                <input type="text" name="firstName" id="firstName" value="{{contact.firstName}}" class="form-control input-block-level" placeholder="First Name" ng-model="contact.firstName" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="lastName" class="col-xs-4 control-label">Last Name</label>
+            <div class="col-xs-8">
+                <input type="text" name="lastName" id="lastName" value="{{contact.lastName}}" class="form-control input-block-level" placeholder="Last Name" ng-model="contact.lastName" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="email" class="col-xs-4 control-label">Email</label>
+            <div class="col-xs-8">
+                <input type="text" name="email" id="lastName" value="{{contact.email}}" class="form-control input-block-level" placeholder="Email" ng-model="contact.email" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="phone" class="col-xs-4 control-label">Phone</label>
+            <div class="col-xs-8">
+                <input type="text" name="phone" id="phone" value="{{contact.phone}}" class="form-control input-block-level" placeholder="Phone" ng-model="contact.phone" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="text-center">
+                <button type="submit" class="btn btn-success">Edit Contact</button>
+            </div>
+        </div>
+    </form>
+</div>

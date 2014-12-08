@@ -1,0 +1,59 @@
+div a:link {
+    text-decoration: none;
+}
+
+.group .commands{
+}
+
+.head-icon{
+width: 50px;
+height: 50px;
+display: block;
+margin: auto;
+opacity: 1.0;
+}
+
+.pageheader form input{
+    height: 38px;
+    border-radius: 1px;
+    width: 240px;
+}
+.pageicon {
+    background:#0866c6;
+    /*width: 48px !important;*/
+}
+.pagetitle h1{
+    line-height:60px;
+}
+.group , .contact{
+    border:1px solid #CECECE;
+    background:white;
+    width:100px;
+    height:160px;
+    padding:10px;
+    display:inline-block;
+    text-align:center;
+    margin-left:10px;
+}
+.group ul , .contact ul{
+    list-style-type: none;
+}
+
+/*.group-details form div, .contact-details form div{
+    margin-bottom:10px;
+}
+
+.group-details form div label, .contact-details form div label{
+    font-weight:bold;
+    width:160px;
+    float:left;
+    text-align:right;
+    padding-right:10px;
+}
+.group-details form div button, .contact-details form div button{
+    margin-left:170px;
+}*/
+
+.userlist li:hover { 
+    background: transparent;
+} 

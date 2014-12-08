@@ -1,0 +1,425 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F497D934-2FB3-44DD-87CB-592C0AE567FB}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>mpbdm</RootNamespace>
+    <AssemblyName>mpbdm</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="fonts\fontawesome\fontawesome-webfont.eot" />
+    <Content Include="fonts\fontawesome\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome\fontawesome-webfont.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\lato\Lato-Bla-webfont.eot" />
+    <Content Include="fonts\lato\Lato-Bla-webfont.ttf" />
+    <Content Include="fonts\lato\Lato-Bla-webfont.woff" />
+    <Content Include="fonts\lato\Lato-BlaIta-webfont.eot" />
+    <Content Include="fonts\lato\Lato-BlaIta-webfont.ttf" />
+    <Content Include="fonts\lato\Lato-BlaIta-webfont.woff" />
+    <Content Include="fonts\lato\Lato-Bol-webfont.eot" />
+    <Content Include="fonts\lato\Lato-Bol-webfont.ttf" />
+    <Content Include="fonts\lato\Lato-Bol-webfont.woff" />
+    <Content Include="fonts\lato\Lato-BolIta-webfont.eot" />
+    <Content Include="fonts\lato\Lato-BolIta-webfont.ttf" />
+    <Content Include="fonts\lato\Lato-BolIta-webfont.woff" />
+    <Content Include="fonts\lato\Lato-Hai-webfont.eot" />
+    <Content Include="fonts\lato\Lato-Hai-webfont.ttf" />
+    <Content Include="fonts\lato\Lato-Hai-webfont.woff" />
+    <Content Include="fonts\lato\Lato-HaiIta-webfont.eot" />
+    <Content Include="fonts\lato\Lato-HaiIta-webfont.ttf" />
+    <Content Include="fonts\lato\Lato-HaiIta-webfont.woff" />
+    <Content Include="fonts\lato\Lato-Lig-webfont.eot" />
+    <Content Include="fonts\lato\Lato-Lig-webfont.ttf" />
+    <Content Include="fonts\lato\Lato-Lig-webfont.woff" />
+    <Content Include="fonts\lato\Lato-LigIta-webfont.eot" />
+    <Content Include="fonts\lato\Lato-LigIta-webfont.ttf" />
+    <Content Include="fonts\lato\Lato-LigIta-webfont.woff" />
+    <Content Include="fonts\lato\Lato-Reg-webfont.eot" />
+    <Content Include="fonts\lato\Lato-Reg-webfont.ttf" />
+    <Content Include="fonts\lato\Lato-Reg-webfont.woff" />
+    <Content Include="fonts\lato\Lato-RegIta-webfont.eot" />
+    <Content Include="fonts\lato\Lato-RegIta-webfont.ttf" />
+    <Content Include="fonts\lato\Lato-RegIta-webfont.woff" />
+    <Content Include="fonts\roboto\Roboto-Black-webfont.eot" />
+    <Content Include="fonts\roboto\Roboto-Black-webfont.ttf" />
+    <Content Include="fonts\roboto\Roboto-Black-webfont.woff" />
+    <Content Include="fonts\roboto\Roboto-BlackItalic-webfont.eot" />
+    <Content Include="fonts\roboto\Roboto-BlackItalic-webfont.ttf" />
+    <Content Include="fonts\roboto\Roboto-BlackItalic-webfont.woff" />
+    <Content Include="fonts\roboto\Roboto-Bold-webfont.eot" />
+    <Content Include="fonts\roboto\Roboto-Bold-webfont.ttf" />
+    <Content Include="fonts\roboto\Roboto-Bold-webfont.woff" />
+    <Content Include="fonts\roboto\Roboto-BoldCondensed-webfont.eot" />
+    <Content Include="fonts\roboto\Roboto-BoldCondensed-webfont.ttf" />
+    <Content Include="fonts\roboto\Roboto-BoldCondensed-webfont.woff" />
+    <Content Include="fonts\roboto\Roboto-BoldCondensedItalic-webfont.eot" />
+    <Content Include="fonts\roboto\Roboto-BoldCondensedItalic-webfont.ttf" />
+    <Content Include="fonts\roboto\Roboto-BoldCondensedItalic-webfont.woff" />
+    <Content Include="fonts\roboto\Roboto-BoldItalic-webfont.eot" />
+    <Content Include="fonts\roboto\Roboto-BoldItalic-webfont.ttf" />
+    <Content Include="fonts\roboto\Roboto-BoldItalic-webfont.woff" />
+    <Content Include="fonts\roboto\Roboto-BoldItalic-webfont_2d2816fe.eot" />
+    <Content Include="fonts\roboto\Roboto-Condensed-webfont.eot" />
+    <Content Include="fonts\roboto\Roboto-Condensed-webfont.ttf" />
+    <Content Include="fonts\roboto\Roboto-Condensed-webfont.woff" />
+    <Content Include="fonts\roboto\Roboto-CondensedItalic-webfont.eot" />
+    <Content Include="fonts\roboto\Roboto-CondensedItalic-webfont.ttf" />
+    <Content Include="fonts\roboto\Roboto-CondensedItalic-webfont.woff" />
+    <Content Include="fonts\roboto\Roboto-Italic-webfont.eot" />
+    <Content Include="fonts\roboto\Roboto-Italic-webfont.ttf" />
+    <Content Include="fonts\roboto\Roboto-Italic-webfont.woff" />
+    <Content Include="fonts\roboto\Roboto-Light-webfont.eot" />
+    <Content Include="fonts\roboto\Roboto-Light-webfont.ttf" />
+    <Content Include="fonts\roboto\Roboto-Light-webfont.woff" />
+    <Content Include="fonts\roboto\Roboto-LightItalic-webfont.eot" />
+    <Content Include="fonts\roboto\Roboto-LightItalic-webfont.ttf" />
+    <Content Include="fonts\roboto\Roboto-LightItalic-webfont.woff" />
+    <Content Include="fonts\roboto\Roboto-Medium-webfont.eot" />
+    <Content Include="fonts\roboto\Roboto-Medium-webfont.ttf" />
+    <Content Include="fonts\roboto\Roboto-Medium-webfont.woff" />
+    <Content Include="fonts\roboto\Roboto-MediumItalic-webfont.eot" />
+    <Content Include="fonts\roboto\Roboto-MediumItalic-webfont.ttf" />
+    <Content Include="fonts\roboto\Roboto-MediumItalic-webfont.woff" />
+    <Content Include="fonts\roboto\Roboto-Regular-webfont.eot" />
+    <Content Include="fonts\roboto\Roboto-Regular-webfont.ttf" />
+    <Content Include="fonts\roboto\Roboto-Regular-webfont.woff" />
+    <Content Include="fonts\roboto\Roboto-Thin-webfont.eot" />
+    <Content Include="fonts\roboto\Roboto-Thin-webfont.ttf" />
+    <Content Include="fonts\roboto\Roboto-Thin-webfont.woff" />
+    <Content Include="fonts\roboto\Roboto-ThinItalic-webfont.eot" />
+    <Content Include="fonts\roboto\Roboto-ThinItalic-webfont.ttf" />
+    <Content Include="fonts\roboto\Roboto-ThinItalic-webfont.woff" />
+    <Content Include="images\icons\Thumbs.db" />
+    <Content Include="images\loaders\Thumbs.db" />
+    <Content Include="images\photos\Thumbs.db" />
+    <Content Include="images\thumbs\Thumbs.db" />
+    <Content Include="images\uniform\Thumbs.db" />
+    <Content Include="scripts\angular-resource.min.js.map" />
+    <Content Include="scripts\angular-route.min.js.map" />
+    <Content Include="scripts\angular.min.js.map" />
+    <Content Include="scripts\jquery-2.1.1.min.map" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="css\reset.css" />
+    <Content Include="css\styles.css" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="fonts\lato\Lato-Bla-webfont.svg" />
+    <Content Include="fonts\lato\Lato-BlaIta-webfont.svg" />
+    <Content Include="fonts\lato\Lato-Bol-webfont.svg" />
+    <Content Include="fonts\lato\Lato-BolIta-webfont.svg" />
+    <Content Include="fonts\lato\Lato-Hai-webfont.svg" />
+    <Content Include="fonts\lato\Lato-HaiIta-webfont.svg" />
+    <Content Include="fonts\lato\Lato-Lig-webfont.svg" />
+    <Content Include="fonts\lato\Lato-LigIta-webfont.svg" />
+    <Content Include="fonts\lato\Lato-Reg-webfont.svg" />
+    <Content Include="fonts\lato\Lato-RegIta-webfont.svg" />
+    <Content Include="fonts\roboto\Roboto-Black-webfont.svg" />
+    <Content Include="fonts\roboto\Roboto-BlackItalic-webfont.svg" />
+    <Content Include="fonts\roboto\Roboto-Bold-webfont.svg" />
+    <Content Include="fonts\roboto\Roboto-BoldCondensed-webfont.svg" />
+    <Content Include="fonts\roboto\Roboto-BoldCondensedItalic-webfont.svg" />
+    <Content Include="fonts\roboto\Roboto-BoldItalic-webfont.svg" />
+    <Content Include="fonts\roboto\Roboto-Condensed-webfont.svg" />
+    <Content Include="fonts\roboto\Roboto-CondensedItalic-webfont.svg" />
+    <Content Include="fonts\roboto\Roboto-Italic-webfont.svg" />
+    <Content Include="fonts\roboto\Roboto-Light-webfont.svg" />
+    <Content Include="fonts\roboto\Roboto-LightItalic-webfont.svg" />
+    <Content Include="fonts\roboto\Roboto-Medium-webfont.svg" />
+    <Content Include="fonts\roboto\Roboto-MediumItalic-webfont.svg" />
+    <Content Include="fonts\roboto\Roboto-Regular-webfont.svg" />
+    <Content Include="fonts\roboto\Roboto-Thin-webfont.svg" />
+    <Content Include="fonts\roboto\Roboto-ThinItalic-webfont.svg" />
+    <Content Include="images\1.png" />
+    <Content Include="images\barmenu.png" />
+    <Content Include="images\bcarrow.png" />
+    <Content Include="images\bg1.png" />
+    <Content Include="images\blockquote.png" />
+    <Content Include="images\border.png" />
+    <Content Include="images\calarrow.png" />
+    <Content Include="images\check.png" />
+    <Content Include="images\check2.png" />
+    <Content Include="images\chosen-sprite.png" />
+    <Content Include="images\comlogo.png" />
+    <Content Include="images\controls.png" />
+    <Content Include="images\droparrow.png" />
+    <Content Include="images\glyphicons-halflings-white.png" />
+    <Content Include="images\glyphicons-halflings.png" />
+    <Content Include="images\iconsweets-icons-white.png" />
+    <Content Include="images\iconsweets-icons.png" />
+    <Content Include="images\icons\bar.png" />
+    <Content Include="images\icons\icon-archive.png" />
+    <Content Include="images\icons\icon-cart.png" />
+    <Content Include="images\icons\icon-event.png" />
+    <Content Include="images\icons\icon-help.png" />
+    <Content Include="images\icons\icon-images.png" />
+    <Content Include="images\icons\message.png" />
+    <Content Include="images\icons\search.png" />
+    <Content Include="images\icons\users.png" />
+    <Content Include="images\leftpanelbg.png" />
+    <Content Include="images\loaders\loader1.gif" />
+    <Content Include="images\loaders\loader10.gif" />
+    <Content Include="images\loaders\loader11.gif" />
+    <Content Include="images\loaders\loader12.gif" />
+    <Content Include="images\loaders\loader13.gif" />
+    <Content Include="images\loaders\loader14.gif" />
+    <Content Include="images\loaders\loader15.gif" />
+    <Content Include="images\loaders\loader16.gif" />
+    <Content Include="images\loaders\loader17.gif" />
+    <Content Include="images\loaders\loader18.gif" />
+    <Content Include="images\loaders\loader19.gif" />
+    <Content Include="images\loaders\loader2.gif" />
+    <Content Include="images\loaders\loader20.gif" />
+    <Content Include="images\loaders\loader21.gif" />
+    <Content Include="images\loaders\loader22.gif" />
+    <Content Include="images\loaders\loader23.gif" />
+    <Content Include="images\loaders\loader24.gif" />
+    <Content Include="images\loaders\loader25.gif" />
+    <Content Include="images\loaders\loader26.gif" />
+    <Content Include="images\loaders\loader27.gif" />
+    <Content Include="images\loaders\loader28.gif" />
+    <Content Include="images\loaders\loader29.gif" />
+    <Content Include="images\loaders\loader3.gif" />
+    <Content Include="images\loaders\loader30.gif" />
+    <Content Include="images\loaders\loader4.gif" />
+    <Content Include="images\loaders\loader5.gif" />
+    <Content Include="images\loaders\loader6.gif" />
+    <Content Include="images\loaders\loader7.gif" />
+    <Content Include="images\loaders\loader8.gif" />
+    <Content Include="images\loaders\loader9.gif" />
+    <Content Include="images\loading.gif" />
+    <Content Include="images\loading_background.png" />
+    <Content Include="images\logo.png" />
+    <Content Include="images\menuarrow.png" />
+    <Content Include="images\next.png" />
+    <Content Include="images\overlay.png" />
+    <Content Include="images\photos\thumb1.png" />
+    <Content Include="images\photos\thumb10.png" />
+    <Content Include="images\photos\thumb2.png" />
+    <Content Include="images\photos\thumb3.png" />
+    <Content Include="images\photos\thumb4.png" />
+    <Content Include="images\photos\thumb5.png" />
+    <Content Include="images\photos\thumb6.png" />
+    <Content Include="images\photos\thumb7.png" />
+    <Content Include="images\prev.png" />
+    <Content Include="images\profilethumb.png" />
+    <Content Include="images\sliderhor.png" />
+    <Content Include="images\sliderver.png" />
+    <Content Include="images\spinner.png" />
+    <Content Include="images\thumbs\audio.png" />
+    <Content Include="images\thumbs\doc.png" />
+    <Content Include="images\thumbs\image1.png" />
+    <Content Include="images\thumbs\image2.png" />
+    <Content Include="images\thumbs\image3.png" />
+    <Content Include="images\thumbs\image4.png" />
+    <Content Include="images\thumbs\image5.png" />
+    <Content Include="images\thumbs\image6.png" />
+    <Content Include="images\thumbs\video.png" />
+    <Content Include="images\transwhite.png" />
+    <Content Include="images\transwhite2.png" />
+    <Content Include="images\uniform\bg-input-focus.png" />
+    <Content Include="images\uniform\bg-input.png" />
+    <Content Include="images\uniform\sprite.png" />
+    <Content Include="imgs\justphonebook.png" />
+    <Content Include="imgs\profile_img.png" />
+    <Content Include="index.html" />
+    <Content Include="js\controllers\accountCtrl.js" />
+    <Content Include="js\controllers\contactCtrl.js" />
+    <Content Include="js\controllers\groupCtrl.js" />
+    <Content Include="js\controllers\importExcelCtrl.js" />
+    <Content Include="js\main.js" />
+    <Content Include="js\page.js" />
+    <Content Include="page.js" />
+    <Content Include="pages\account\account-top.html" />
+    <Content Include="pages\contact\contact-details.html" />
+    <Content Include="pages\contact\contact-insert.html" />
+    <Content Include="pages\contact\contacts.html" />
+    <Content Include="pages\group\group-details.html" />
+    <Content Include="pages\group\group-insert.html" />
+    <Content Include="pages\group\groups.html" />
+    <Content Include="pages\import\import.html" />
+    <Content Include="prettify\prettify.css" />
+    <Content Include="prettify\prettify.js" />
+    <Content Include="scripts\angular-file-upload-all.js" />
+    <Content Include="scripts\angular-file-upload-all.min.js" />
+    <Content Include="scripts\angular-file-upload-shim.js" />
+    <Content Include="scripts\angular-file-upload-shim.min.js" />
+    <Content Include="scripts\angular-file-upload.js" />
+    <Content Include="scripts\angular-file-upload.min.js" />
+    <Content Include="scripts\angular-mocks.js" />
+    <Content Include="scripts\angular-resource.js" />
+    <Content Include="scripts\angular-resource.min.js" />
+    <Content Include="scripts\angular-route.js" />
+    <Content Include="scripts\angular-route.min.js" />
+    <Content Include="scripts\angular.js" />
+    <Content Include="scripts\angular.min.js" />
+    <Content Include="scripts\bootstrap.js" />
+    <Content Include="scripts\bootstrap.min.js" />
+    <Content Include="scripts\FileAPI.flash.swf" />
+    <Content Include="scripts\FileAPI.min.js" />
+    <None Include="scripts\jquery-2.1.1-vsdoc.js" />
+    <Content Include="scripts\jquery-2.1.1.js" />
+    <Content Include="scripts\jquery-2.1.1.min.js" />
+    <Content Include="styles.css" />
+    <Content Include="tmpl-css\animate.delay.css" />
+    <Content Include="tmpl-css\animate.min.css" />
+    <Content Include="tmpl-css\bootstrap-fileupload.min.css" />
+    <Content Include="tmpl-css\bootstrap-responsive.min.css" />
+    <Content Include="tmpl-css\bootstrap-timepicker.min.css" />
+    <Content Include="tmpl-css\bootstrap.min.css" />
+    <Content Include="tmpl-css\colorbox.css" />
+    <Content Include="tmpl-css\colorpicker.css" />
+    <Content Include="tmpl-css\font-awesome.min.css" />
+    <Content Include="tmpl-css\fullcalendar.css" />
+    <Content Include="tmpl-css\isotope.css" />
+    <Content Include="tmpl-css\jquery.alerts.css" />
+    <Content Include="tmpl-css\jquery.chosen.css" />
+    <Content Include="tmpl-css\jquery.jgrowl.css" />
+    <Content Include="tmpl-css\jquery.tagsinput.css" />
+    <Content Include="tmpl-css\jquery.ui.css" />
+    <Content Include="tmpl-css\lato.css" />
+    <Content Include="tmpl-css\responsive-tables.css" />
+    <Content Include="tmpl-css\roboto.css" />
+    <Content Include="tmpl-css\style.default.css" />
+    <Content Include="tmpl-css\ui.spinner.css" />
+    <Content Include="tmpl-css\uniform.tp.css" />
+    <Content Include="tmpl-js\bootstrap-fileupload.min.js" />
+    <Content Include="tmpl-js\bootstrap-timepicker.min.js" />
+    <Content Include="tmpl-js\bootstrap.min.js" />
+    <Content Include="tmpl-js\charCount.js" />
+    <Content Include="tmpl-js\charts.js" />
+    <Content Include="tmpl-js\chosen.jquery.min.js" />
+    <Content Include="tmpl-js\custom.js" />
+    <Content Include="tmpl-js\elements.js" />
+    <Content Include="tmpl-js\excanvas.min.js" />
+    <Content Include="tmpl-js\flot\jquery.flot.crosshair.min.js" />
+    <Content Include="tmpl-js\flot\jquery.flot.fillbetween.min.js" />
+    <Content Include="tmpl-js\flot\jquery.flot.min.js" />
+    <Content Include="tmpl-js\flot\jquery.flot.pie.min.js" />
+    <Content Include="tmpl-js\flot\jquery.flot.resize.min.js" />
+    <Content Include="tmpl-js\flot\jquery.flot.stack.min.js" />
+    <Content Include="tmpl-js\flot\jquery.flot.symbol.min.js" />
+    <Content Include="tmpl-js\forms.js" />
+    <Content Include="tmpl-js\fullcalendar.min.js" />
+    <Content Include="tmpl-js\jquery-1.9.1.min.js" />
+    <Content Include="tmpl-js\jquery-migrate-1.1.1.min.js" />
+    <Content Include="tmpl-js\jquery-ui-1.9.2.min.js" />
+    <Content Include="tmpl-js\jquery-ui-1.9.2.min_4edc03d1.js" />
+    <Content Include="tmpl-js\jquery-ui-1.9.2.min_d9931375.js" />
+    <Content Include="tmpl-js\jquery.alerts.js" />
+    <Content Include="tmpl-js\jquery.autogrow-textarea.js" />
+    <Content Include="tmpl-js\jquery.bxSlider.min.js" />
+    <Content Include="tmpl-js\jquery.colorbox-min.js" />
+    <Content Include="tmpl-js\jquery.cookie.js" />
+    <Content Include="tmpl-js\jquery.dataTables.min.js" />
+    <Content Include="tmpl-js\jquery.isotope.min.js" />
+    <Content Include="tmpl-js\jquery.jgrowl.js" />
+    <Content Include="tmpl-js\jquery.slimscroll.js" />
+    <Content Include="tmpl-js\jquery.smartWizard.min.js" />
+    <Content Include="tmpl-js\jquery.tagsinput.min.js" />
+    <Content Include="tmpl-js\jquery.uniform.min.js" />
+    <Content Include="tmpl-js\jquery.validate.min.js" />
+    <Content Include="tmpl-js\modernizr.min.js" />
+    <Content Include="tmpl-js\responsive-tables.js" />
+    <Content Include="tmpl-js\tinymce\jquery.tinymce.js" />
+    <Content Include="tmpl-js\ui.spinner.min.js" />
+    <Content Include="tmpl-js\wysiwyg.js" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="upload\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>58705</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:58705/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

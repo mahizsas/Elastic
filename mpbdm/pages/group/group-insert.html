@@ -1,0 +1,21 @@
+﻿<div class="contact-details">
+    <form class="form-horizontal" role="form" ng-submit="insertGroup(group);" novalidate>
+        <div class="form-group">
+            <label for="name" class="col-xs-4 control-label">Name</label>
+            <div class="col-xs-8">
+                <input type="text" name="name" id="name" value="{{group.name}}" class="form-control input-block-level" placeholder="Name" ng-model="group.name" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="lastName" class="col-xs-4 control-label">Address</label>
+            <div class="col-xs-8">
+                <input type="text" name="lastName" id="lastName" value="{{group.address}}" class="form-control input-block-level" placeholder="Address" ng-model="group.address" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="text-center">
+                <button type="submit" class="btn btn-success">Insert Group</button>
+            </div>
+        </div>
+    </form>
+</div>

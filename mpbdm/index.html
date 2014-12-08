@@ -1,0 +1,218 @@
+﻿<!-- DOWNLOADED FROM WWW.SCRIPTGATES.COM -->
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Shamcey - Metro Style Admin Template</title>
+   
+    <link rel="stylesheet" href="tmpl-css/style.default.css" type="text/css" />
+
+    <link rel='stylesheet' href='css/styles.css' />
+
+    <link rel="stylesheet" href="tmpl-css/responsive-tables.css" />
+
+<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="tmpl-js/excanvas.min.js"></script><![endif]-->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+
+<body ng-app="phonebook">
+
+    <div class="mainwrapper">
+
+        <div class="header">
+            <div class="logo">
+                <a href="dashboard.html"><img src="images/logo.png" alt="" /></a>
+            </div>
+            <div class="headerinner">
+                <ul class="headmenu">
+                    <li class="odd">
+                        <a class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="count">4</span>
+                            <span class="head-icon head-message"></span>
+                            <span class="headmenu-label">Messages</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="nav-header">Messages</li>
+                            <li><a href=""><span class="icon-envelope"></span> New message from <strong>Jack</strong> <small class="muted"> - 19 hours ago</small></a></li>
+                            <li><a href=""><span class="icon-envelope"></span> New message from <strong>Daniel</strong> <small class="muted"> - 2 days ago</small></a></li>
+                            <li><a href=""><span class="icon-envelope"></span> New message from <strong>Jane</strong> <small class="muted"> - 3 days ago</small></a></li>
+                            <li><a href=""><span class="icon-envelope"></span> New message from <strong>Tanya</strong> <small class="muted"> - 1 week ago</small></a></li>
+                            <li><a href=""><span class="icon-envelope"></span> New message from <strong>Lee</strong> <small class="muted"> - 1 week ago</small></a></li>
+                            <li class="viewmore"><a href="messages.html">View More Messages</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="dropdown-toggle" data-toggle="dropdown" data-target="#">
+                            <span class="count">10</span>
+                            <span class="head-icon head-users"></span>
+                            <span class="headmenu-label">New Users</span>
+                        </a>
+                        <ul class="dropdown-menu newusers">
+                            <li class="nav-header">New Users</li>
+                            <li>
+                                <a href="">
+                                    <img src="images/photos/thumb1.png" alt="" class="userthumb" />
+                                    <strong>Draniem Daamul</strong>
+                                    <small>April 20, 2013</small>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <img src="images/photos/thumb2.png" alt="" class="userthumb" />
+                                    <strong>Shamcey Sindilmaca</strong>
+                                    <small>April 19, 2013</small>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <img src="images/photos/thumb3.png" alt="" class="userthumb" />
+                                    <strong>Nusja Paul Nawancali</strong>
+                                    <small>April 19, 2013</small>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <img src="images/photos/thumb4.png" alt="" class="userthumb" />
+                                    <strong>Rose Cerona</strong>
+                                    <small>April 18, 2013</small>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <img src="images/photos/thumb5.png" alt="" class="userthumb" />
+                                    <strong>John Doe</strong>
+                                    <small>April 16, 2013</small>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="odd">
+                        <a class="dropdown-toggle" data-toggle="dropdown" data-target="#">
+                            <span class="count">1</span>
+                            <span class="head-icon head-bar"></span>
+                            <span class="headmenu-label">Statistics</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="nav-header">Statistics</li>
+                            <li><a href=""><span class="icon-align-left"></span> New Reports from <strong>Products</strong> <small class="muted"> - 19 hours ago</small></a></li>
+                            <li><a href=""><span class="icon-align-left"></span> New Statistics from <strong>Users</strong> <small class="muted"> - 2 days ago</small></a></li>
+                            <li><a href=""><span class="icon-align-left"></span> New Statistics from <strong>Comments</strong> <small class="muted"> - 3 days ago</small></a></li>
+                            <li><a href=""><span class="icon-align-left"></span> Most Popular in <strong>Products</strong> <small class="muted"> - 1 week ago</small></a></li>
+                            <li><a href=""><span class="icon-align-left"></span> Most Viewed in <strong>Blog</strong> <small class="muted"> - 1 week ago</small></a></li>
+                            <li class="viewmore"><a href="charts.html">View More Statistics</a></li>
+                        </ul>
+                    </li>
+                    <li class="right">
+                        <account></account>
+                    </li>
+                </ul><!--headmenu-->
+            </div>
+        </div>
+
+        <div class="leftpanel">
+
+            <div class="leftmenu" ng-init="tab=1">
+                <ul class="nav nav-tabs nav-stacked">
+                    <li class="nav-header">Navigation</li>
+                    <li ng-class="{active : tab == 1}" ng-click="tab = 1"><a ng-href="#/">Groups</a></li>
+                    <li ng-class="{active : tab == 2}" ng-click="tab = 2"><a ng-href="#/contacts">Contacts</a></li>
+                    <li ng-class="{active : tab == 3}" ng-click="tab = 3"><a ng-href="#/">Favorites</a></li>
+                </ul>
+                <ul class="nav nav-tabs nav-stacked" ng-init="tab=1">
+                    <li class="nav-header">Import Excel</li>                    
+                    <li ng-class="{active : tab == 4}" ng-click="tab = 4"><a ng-href="#/import">Import</a></li>
+                </ul>
+            </div><!--leftmenu-->
+
+        </div><!-- leftpanel -->
+
+        <div class="rightpanel">
+
+            <ul class="breadcrumbs">
+                <li><a href="dashboard.html"><i class="iconfa-home"></i></a> <span class="separator"></span></li>
+                <li>Dashboard</li>
+                <li class="right">
+                    <a href="" data-toggle="dropdown" class="dropdown-toggle"><i class="icon-tint"></i> Color Skins</a>
+                    <ul class="dropdown-menu pull-right skin-color">
+                        <li><a href="default">Default</a></li>
+                        <li><a href="navyblue">Navy Blue</a></li>
+                        <li><a href="palegreen">Pale Green</a></li>
+                        <li><a href="red">Red</a></li>
+                        <li><a href="green">Green</a></li>
+                        <li><a href="brown">Brown</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <div class="pageheader">
+                <form action="results.html" method="post" class="searchbar">
+                    <input type="text" name="keyword" placeholder="To search type and hit enter..." />
+                </form>
+                <div class="pageicon"><span class="head-icon head-users" ></span></div>
+                <div class="pagetitle">
+                    <h5></h5>
+                    <h1>{{currentTitle}}</h1>
+                </div>
+            </div><!--pageheader-->
+
+            <div class="maincontent">
+                <div class="maincontentinner">
+                    <div class="row-fluid">
+                        <div id="dashboard-left" class="span8" ng-view></div><!--span8-->
+
+                        <div id="dashboard-right" class="span4">
+                            <h5 class="subtitle">Announcements</h5>
+                            <div class="divider15"></div>
+                            <div class="alert alert-block">
+                                <button data-dismiss="alert" class="close" type="button">&times;</button>
+                                <h4>Warning!</h4>
+                                <p style="margin: 8px 0">Best check yo self, you're not looking too good. Nulla vitae elit libero, a pharetra augue. Praesent commodo cursus magna.</p>
+                            </div><!--alert-->
+                        </div><!--span4-->
+                    </div><!--row-fluid-->
+
+                    <div class="footer">
+                        <div class="footer-left">
+                            <span>&copy; 2014. Our Admin Template. All Rights Reserved.</span>
+                        </div>
+                        <div class="footer-right">
+                            <span>Designed by: Us</span>
+                        </div>
+                    </div><!--footer-->
+
+                </div><!--maincontentinner-->
+            </div><!--maincontent-->
+
+        </div><!--rightpanel-->
+
+    </div><!--mainwrapper-->
+    <script type="text/javascript" src="tmpl-js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="tmpl-js/jquery-migrate-1.1.1.min.js"></script>
+    <script type="text/javascript" src="tmpl-js/jquery-ui-1.9.2.min.js"></script>
+    <script type="text/javascript" src="tmpl-js/modernizr.min.js"></script>
+    <script type="text/javascript" src="tmpl-js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="tmpl-js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="tmpl-js/jquery.uniform.min.js"></script>
+    <script type="text/javascript" src="tmpl-js/flot/jquery.flot.min.js"></script>
+    <script type="text/javascript" src="tmpl-js/flot/jquery.flot.resize.min.js"></script>
+    <script type="text/javascript" src="tmpl-js/responsive-tables.js"></script>
+    <script type="text/javascript" src="tmpl-js/custom.js"></script>
+    <script src='http://ajax.aspnetcdn.com/ajax/mobileservices/MobileServices.Web-1.2.2.min.js'></script>
+    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>-->
+    <script src="scripts/angular.js"></script>
+    <script src="scripts/angular-route.js"></script>
+    <script src="scripts/angular-resource.js"></script>
+    <script src="scripts/angular-file-upload.min.js"></script>
+    <script src="scripts/angular-file-upload-shim.min.js"></script>
+    <script src='js/page.js'></script>
+    
+
+
+    <script src="js/main.js"></script>
+    <script src="js/controllers/groupCtrl.js"></script>
+    <script src="js/controllers/contactCtrl.js"></script>
+    <script src="js/controllers/accountCtrl.js"></script>
+    <script src="js/controllers/importExcelCtrl.js"></script>
+
+</body>
+</html>
