@@ -19,6 +19,13 @@ namespace mpbdmService.DataObjects
             get { return ProviderName; }
         }
 
+        protected override TokenInfo CreateTokenInfo(ClaimsIdentity claimsIdentity, ProviderCredentials credentialsClaim, string secretKey)
+        {
+            TokenInfo token = base.CreateTokenInfo(claimsIdentity, credentialsClaim, secretKey);
+            var stri = token.Token.ToString();
+            return token;
+        }
+
         public CustomLoginProvider(IServiceTokenHandler tokenHandler)
             : base(tokenHandler)
         {
@@ -27,7 +34,7 @@ namespace mpbdmService.DataObjects
 
         public override void ConfigureMiddleware(IAppBuilder appBuilder, ServiceSettingsDictionary settings)
         {
-            // Not Applicable - used for federated identity flows
+            
             return;
         }
 

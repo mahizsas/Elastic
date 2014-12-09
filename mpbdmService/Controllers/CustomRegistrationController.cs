@@ -29,8 +29,8 @@ namespace mpbdmService.Controllers
             {
                 return this.Request.CreateResponse(HttpStatusCode.BadRequest, "Invalid password (at least 8 chars required)");
             }
-
-            mpbdmContext context = new mpbdmContext();
+            // MUST RECHECK CORRECT DB!!!!!!!!!!!
+            mpbdmContext<string> context = new mpbdmContext<string>();
             Account account = context.Accounts.Where(a => a.Username == registrationRequest.username).SingleOrDefault();
             if (account != null)
             {

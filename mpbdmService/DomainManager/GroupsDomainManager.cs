@@ -21,7 +21,7 @@ namespace mpbdmService.DomainManager
     {
         public IPrincipal User;
         
-        public GroupsDomainManager( mpbdmContext context , HttpRequestMessage request , ApiServices services ) 
+        public GroupsDomainManager( mpbdmContext<string> context , HttpRequestMessage request , ApiServices services ) 
                     : base ( context , request , services , true )
         {
         }

@@ -17,10 +17,10 @@ namespace mpbdmService.Controllers
         protected override void Initialize(HttpControllerContext controllerContext)
         {
             base.Initialize(controllerContext);
-            mpbdmContext context = new mpbdmContext();
-            DomainManager = new EntityDomainManager<Groups>(context, Request, Services );
+            db = new mpbdmContext<string>();
+            DomainManager = new EntityDomainManager<Groups>(db, Request, Services );
         }
-        mpbdmContext db = new mpbdmContext();
+        mpbdmContext<string> db;
 
 
         // GET tables/Groups

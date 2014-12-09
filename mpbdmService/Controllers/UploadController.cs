@@ -32,7 +32,7 @@ namespace mpbdmService.Controllers
             return "value";
         }
 
-        public async Task<HttpResponseMessage> Post( string groupsId )
+        public async Task<HttpResponseMessage> Post(string groupsId )
         {
             
             CloudStorageAccount acc = CloudStorageAccount.Parse(ConfigurationManager.ConnectionStrings["Azure"].ConnectionString);
@@ -70,7 +70,7 @@ namespace mpbdmService.Controllers
                 HSSFSheet sheet = (HSSFSheet)templateWorkbook.GetSheet("Sheet1");
 
 
-                mpbdmContext db = new mpbdmContext();
+                mpbdmContext<string> db = new mpbdmContext<string>();
                 for (int i = 1; true; i++)
                 {
                     var row = sheet.GetRow(i);

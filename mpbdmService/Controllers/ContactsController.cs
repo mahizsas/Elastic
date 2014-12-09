@@ -23,11 +23,12 @@ namespace mpbdmService.Controllers
         protected override void Initialize(HttpControllerContext controllerContext)
         {
             base.Initialize(controllerContext);
-            mpbdmContext context = new mpbdmContext();
-            DomainManager = new EntityDomainManager<Contacts>(context, Request, Services , true);
+            db = new mpbdmContext<string>();
+            DomainManager = new EntityDomainManager<Contacts>(db, Request, Services , true);
             
         }
-        mpbdmContext db = new mpbdmContext();
+        private mpbdmContext<string> db;
+
         private string GetCompanyId(string currentId)
         {
             var user = db.Users.Where(s => s.Id == currentId).FirstOrDefault();

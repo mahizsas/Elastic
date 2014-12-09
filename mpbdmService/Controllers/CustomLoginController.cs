@@ -23,7 +23,7 @@ namespace mpbdmService.Controllers
         // POST api/CustomLogin
         public HttpResponseMessage Post(LoginRequest loginRequest)
         {
-            mpbdmContext context = new mpbdmContext();
+            mpbdmContext<string> context = new mpbdmContext<string>();
             Account account = context.Accounts.Include("User.Companies").Where(a => a.Username == loginRequest.username).SingleOrDefault();
             if (account != null)
             {

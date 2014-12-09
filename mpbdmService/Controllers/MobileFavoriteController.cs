@@ -12,11 +12,12 @@ namespace mpbdmService.Controllers
 {
     public class MobileFavoriteController : TableController<MobileFavorites>
     {
+        private mpbdmContext<string> db;
         protected override void Initialize(HttpControllerContext controllerContext)
         {
             base.Initialize(controllerContext);
-            mpbdmContext context = new mpbdmContext();
-            DomainManager = new FavoritesDomainManager(context, Request, Services , User);
+            db = new mpbdmContext<string>();
+            DomainManager = new FavoritesDomainManager(db, Request, Services , User);
         }
 
         // GET tables/MobileFavorites

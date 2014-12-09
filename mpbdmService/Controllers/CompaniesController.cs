@@ -16,10 +16,10 @@ namespace mpbdmService.Controllers
         protected override void Initialize(HttpControllerContext controllerContext)
         {
             base.Initialize(controllerContext);
-            mpbdmContext context = new mpbdmContext();
-            DomainManager = new EntityDomainManager<Companies>(context, Request, Services);
+            db = new mpbdmContext<string>();
+            DomainManager = new EntityDomainManager<Companies>(db, Request, Services);
         }
-        mpbdmContext db = new mpbdmContext();
+        private mpbdmContext<string> db;
 
         // GET tables/Companies
         public IQueryable<Companies> GetAllCompanies()
@@ -27,6 +27,7 @@ namespace mpbdmService.Controllers
             //var currentId = "Google:105535740556221909032";
             var currentUser = User as ServiceUser;
             var currentId = currentUser.Id;
+            
             IQueryable<Companies> companies = from c in db.Companies
                                             join a in db.Users
                                             on c.Id equals a.CompaniesID

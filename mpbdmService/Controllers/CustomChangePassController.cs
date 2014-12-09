@@ -22,7 +22,8 @@ namespace mpbdmService.Controllers
         // POST api/CustomLogin
         public HttpResponseMessage Post(ChangePassRequest changeRequest)
         {
-            mpbdmContext context = new mpbdmContext();
+            // NEED TO RECHECK CONTEXT MUST DETERMINE COMPANY -> MUST FIND CORRECT DataBase
+            mpbdmContext<string> context = new mpbdmContext<string>();
             Account account = context.Accounts.Where(a => a.Username == changeRequest.username).SingleOrDefault();
             if (account != null)
             {

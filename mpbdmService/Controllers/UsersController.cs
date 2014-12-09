@@ -13,11 +13,12 @@ namespace mpbdmService.Controllers
     //[AuthorizeLevel(AuthorizationLevel.User)] 
     public class UsersController : TableController<Users>
     {
+        private mpbdmContext<string> db;
         protected override void Initialize(HttpControllerContext controllerContext)
         {
             base.Initialize(controllerContext);
-            mpbdmContext context = new mpbdmContext();
-            DomainManager = new EntityDomainManager<Users>(context, Request, Services);
+            db = new mpbdmContext<string>();
+            DomainManager = new EntityDomainManager<Users>(db, Request, Services);
         }
         
 

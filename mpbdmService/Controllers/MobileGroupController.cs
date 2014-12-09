@@ -14,11 +14,12 @@ namespace mpbdmService.Controllers
     [AuthorizeLevel(AuthorizationLevel.User)] 
     public class MobileGroupController : TableController<MobileGroup>
     {
+        private mpbdmContext<string> db;
         protected override void Initialize(HttpControllerContext controllerContext)
         {
             base.Initialize(controllerContext);
-            mpbdmContext context = new mpbdmContext();
-            this.DomainManager = new GroupsDomainManager(context, Request, Services);
+            db = new mpbdmContext<string>();
+            this.DomainManager = new GroupsDomainManager(db, Request, Services);
         }
 
 

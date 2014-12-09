@@ -17,7 +17,7 @@ namespace mpbdmService.DomainManager
     public class FavoritesDomainManager : MappedEntityDomainManager<MobileFavorites, Favorites>
     {
         public IPrincipal User;
-        public FavoritesDomainManager(mpbdmContext context, HttpRequestMessage request, ApiServices services, IPrincipal User)
+        public FavoritesDomainManager(mpbdmContext<string> context, HttpRequestMessage request, ApiServices services, IPrincipal User)
             : base(context, request, services , true)
         {
             this.User = User;
