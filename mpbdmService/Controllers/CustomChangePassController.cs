@@ -23,7 +23,7 @@ namespace mpbdmService.Controllers
         public HttpResponseMessage Post(ChangePassRequest changeRequest)
         {
             // NEED TO RECHECK CONTEXT MUST DETERMINE COMPANY -> MUST FIND CORRECT DataBase
-            mpbdmContext<string> context = new mpbdmContext<string>();
+            mpbdmContext<Guid> context = new mpbdmContext<Guid>();
             Account account = context.Accounts.Where(a => a.Username == changeRequest.username).SingleOrDefault();
             if (account != null)
             {

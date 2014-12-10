@@ -70,7 +70,7 @@ namespace mpbdmService.Controllers
                 HSSFSheet sheet = (HSSFSheet)templateWorkbook.GetSheet("Sheet1");
 
 
-                mpbdmContext<string> db = new mpbdmContext<string>();
+                mpbdmContext<Guid> db = new mpbdmContext<Guid>();
                 for (int i = 1; true; i++)
                 {
                     var row = sheet.GetRow(i);

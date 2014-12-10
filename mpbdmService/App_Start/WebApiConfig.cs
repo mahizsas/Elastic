@@ -16,7 +16,7 @@ namespace mpbdmService
 {
     public static class WebApiConfig
     {
-        public static Sharding sharding;
+        public static Sharding ShardingObj;
         public static void Register()
         {
             // Use this class to set configuration options for your mobile service
@@ -51,13 +51,13 @@ namespace mpbdmService
             string connectionString = ConfigurationManager.ConnectionStrings["ElasticConnectionString"].ToString();
             string shard1 = "shard0";
             string shard2 = "shard1";
-            string company1 = "2c8c7462-d6ca-429c-9021-21203bea780d";
-            string company2 = "48344df7-4837-4144-b1c8-6470aeb9dae4";
+            string company1 = "48344df7-4837-4144-b1c8-21203bea780d";
+            string company2 = "2c8c7462-d6ca-429c-9021-21203bea780d";
 
             // sharding GLOBAL 
-            sharding = new Sharding(server, shardmapmgrdb, connectionString);
-            sharding.RegisterNewShard(server, shard1, connectionString, company1);
-            sharding.RegisterNewShard(server, shard2, connectionString, company2);
+            ShardingObj = new Sharding(server, shardmapmgrdb, connectionString);
+            ShardingObj.RegisterNewShard(server, shard1, connectionString, company1);
+            ShardingObj.RegisterNewShard(server, shard2, connectionString, company2);
 
             // Register the mapping of the tenant to the shard in the shard map.
             // After this step, DDR on the shard map can be used
@@ -71,10 +71,10 @@ namespace mpbdmService
         }
     }
 
-    public class mpbdmInitializer : ClearDatabaseSchemaIfModelChanges<mpbdmContext<string>> 
-                                    //ClearDatabaseSchemaAlways<mpbdmContext<string>>
+    public class mpbdmInitializer : ClearDatabaseSchemaIfModelChanges<mpbdmContext<Guid>> 
+                                    //ClearDatabaseSchemaAlways<mpbdmContext<Guid>>
     {
-        protected override void Seed(mpbdmContext<string> context)
+        protected override void Seed(mpbdmContext<Guid> context)
         {
         
 

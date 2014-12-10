@@ -9,6 +9,7 @@ using System;
 using System.Data.SqlClient;
 using Microsoft.Azure.SqlDatabase.ElasticScale.ShardManagement;
 using System.Data.Common;
+using System.Diagnostics;
 
 namespace mpbdmService.Models
 {
@@ -70,7 +71,7 @@ namespace mpbdmService.Models
         private static string SetInitializerForConnection(string connnectionString)
         {
             // We want existence checks so that the schema can get deployed
-            Database.SetInitializer<mpbdmContext<string>>(new mpbdmInitializer());
+            Database.SetInitializer<mpbdmContext<Guid>>(new CreateDatabaseIfNotExists<mpbdmContext<Guid>>());
             return connnectionString;
         }
 
@@ -91,6 +92,7 @@ namespace mpbdmService.Models
 
             // Ask shard map to broker a validated connection for the given key
             SqlConnection conn = shardMap.OpenConnectionForKey<T>(shardingKey, connectionStr, ConnectionOptions.Validate);
+
             return conn;
         }
 

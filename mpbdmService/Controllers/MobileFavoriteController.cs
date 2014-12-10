@@ -7,16 +7,17 @@ using Microsoft.WindowsAzure.Mobile.Service;
 using mpbdmService.DataObjects;
 using mpbdmService.Models;
 using mpbdmService.DomainManager;
+using System;
 
 namespace mpbdmService.Controllers
 {
     public class MobileFavoriteController : TableController<MobileFavorites>
     {
-        private mpbdmContext<string> db;
+        private mpbdmContext<Guid> db;
         protected override void Initialize(HttpControllerContext controllerContext)
         {
             base.Initialize(controllerContext);
-            db = new mpbdmContext<string>();
+            db = new mpbdmContext<Guid>();
             DomainManager = new FavoritesDomainManager(db, Request, Services , User);
         }
 

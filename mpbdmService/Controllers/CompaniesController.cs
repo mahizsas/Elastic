@@ -7,6 +7,8 @@ using Microsoft.WindowsAzure.Mobile.Service;
 using mpbdmService.DataObjects;
 using mpbdmService.Models;
 using Microsoft.WindowsAzure.Mobile.Service.Security;
+using System;
+using System.Diagnostics;
 
 namespace mpbdmService.Controllers
 {
@@ -16,24 +18,28 @@ namespace mpbdmService.Controllers
         protected override void Initialize(HttpControllerContext controllerContext)
         {
             base.Initialize(controllerContext);
-            db = new mpbdmContext<string>();
+            db = new mpbdmContext<Guid>();
             DomainManager = new EntityDomainManager<Companies>(db, Request, Services);
         }
-        private mpbdmContext<string> db;
+        private mpbdmContext<Guid> db;
 
+        private string findShard()
+        {
+            w.Start();
+            var currentUser = User as ServiceUser;
+            var currentId = currentUser.Id;
+            Guid shardKey = new Guid(currentUser.Id.Split((":").ToArray<char>()).FirstOrDefault().ToString());
+            db = new mpbdmContext<Guid>(WebApiConfig.ShardingObj.ShardMap, shardKey, WebApiConfig.ShardingObj.connstring);
+
+            ((EntityDomainManager<Companies>)DomainManager).Context = db;
+            return shardKey.ToString();
+        }
+        Stopwatch w = new Stopwatch(); 
         // GET tables/Companies
         public IQueryable<Companies> GetAllCompanies()
         {
-            //var currentId = "Google:105535740556221909032";
-            var currentUser = User as ServiceUser;
-            var currentId = currentUser.Id;
-            
-            IQueryable<Companies> companies = from c in db.Companies
-                                            join a in db.Users
-                                            on c.Id equals a.CompaniesID
-                                            where a.Id == currentId
-                                            select c;
-            return companies;
+            string shardKey = findShard();  
+            return Query().Where(s=>s.Id == shardKey);
         }
 
         // GET tables/Companies/48D68C86-6EA6-4C25-AA33-223FC9A27959

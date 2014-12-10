@@ -10,6 +10,8 @@ using System.Web;
 using System.Web.Http;
 using mpbdmService.Models;
 using System.Text.RegularExpressions;
+using Microsoft.Azure.SqlDatabase.ElasticScale.Query;
+using System.Data;
 
 namespace mpbdmService.Controllers
 {
@@ -29,8 +31,49 @@ namespace mpbdmService.Controllers
             {
                 return this.Request.CreateResponse(HttpStatusCode.BadRequest, "Invalid password (at least 8 chars required)");
             }
+
+            // MUST FIND COMPANY BY EMAIL
+            // CREATE a MULTISHARD COMMAND
+            // SEARCH BY EMAIL
+            Guid shardKey;
+            var aa = WebApiConfig.ShardingObj.ShardMap.GetShards();
+            var ba = WebApiConfig.ShardingObj.connstring;
+            using (MultiShardConnection conn = new MultiShardConnection(aa,ba ))
+            {
+                using (MultiShardCommand cmd = conn.CreateCommand())
+                {
+                    // Get emailDomain 
+                    char[] papaki = new char[1];
+                    papaki[0] = '@';
+                    // SQL INJECTION SECURITY ISSUE
+                    string emailDomain = registrationRequest.email.Split(papaki).Last();
+
+                    // CHECK SCHEMA
+                    cmd.CommandText = "SELECT Id FROM [mpbdm].[Companies] WHERE Email LIKE '%" + emailDomain + "'";
+                    cmd.CommandType = CommandType.Text;
+                    cmd.ExecutionOptions = MultiShardExecutionOptions.IncludeShardNameColumn;
+                    cmd.ExecutionPolicy = MultiShardExecutionPolicy.PartialResults;
+
+                    using (MultiShardDataReader sdr = cmd.ExecuteReader())
+                    {
+                        bool res = sdr.Read();
+                        if (res != false)
+                        {
+                            //var a = sdr.GetBytes(0, 0, salt, 0, 256); // 256 comes from cryptography
+                            //var b = sdr.GetBytes(1, 0, saltPass, 0, 512); // 512comes from cryptography
+                            shardKey = new Guid(sdr.GetString(0));
+                        }
+                        else
+                        {
+                            return this.Request.CreateResponse(HttpStatusCode.BadRequest, "Registration failed propably there is no Company with such email!");
+                        }
+                    }
+                }
+            }
+            //////////////////////////////////////////////////////////////////////
+
             // MUST RECHECK CORRECT DB!!!!!!!!!!!
-            mpbdmContext<string> context = new mpbdmContext<string>();
+            mpbdmContext<Guid> context = new mpbdmContext<Guid>(WebApiConfig.ShardingObj.ShardMap, shardKey, WebApiConfig.ShardingObj.connstring);
             Account account = context.Accounts.Where(a => a.Username == registrationRequest.username).SingleOrDefault();
             if (account != null)
             {
@@ -40,10 +83,10 @@ namespace mpbdmService.Controllers
             {
                 byte[] salt = CustomLoginProviderUtils.generateSalt();
 
-                string compId = "2c8c7462-d6ca-429c-9021-21203bea780d";
+                string compId = shardKey.ToString();
                 Users newUser = new Users
                 {
-                    Id = CustomLoginProvider.ProviderName + ":" + registrationRequest.username,
+                    Id = shardKey + ":" + registrationRequest.username,
                     CompaniesID = compId,
                     FirstName = registrationRequest.firstName,
                     LastName = registrationRequest.lastName,
@@ -58,9 +101,17 @@ namespace mpbdmService.Controllers
                     SaltedAndHashedPassword = CustomLoginProviderUtils.hash(registrationRequest.password, salt),
                     User = newUser
                 };
-                
+
+                context.Users.Add(newUser);
                 context.Accounts.Add(newAccount);
-                context.SaveChanges();
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    var a = ex.InnerException;
+                }
                 return this.Request.CreateResponse(HttpStatusCode.Created);
             }
         }

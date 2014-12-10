@@ -7,17 +7,18 @@ using Microsoft.WindowsAzure.Mobile.Service;
 using mpbdmService.DataObjects;
 using mpbdmService.Models;
 using Microsoft.WindowsAzure.Mobile.Service.Security;
+using System;
 
 namespace mpbdmService.Controllers
 {
     //[AuthorizeLevel(AuthorizationLevel.User)] 
     public class UsersController : TableController<Users>
     {
-        private mpbdmContext<string> db;
+        private mpbdmContext<Guid> db;
         protected override void Initialize(HttpControllerContext controllerContext)
         {
             base.Initialize(controllerContext);
-            db = new mpbdmContext<string>();
+            db = new mpbdmContext<Guid>();
             DomainManager = new EntityDomainManager<Users>(db, Request, Services);
         }
         

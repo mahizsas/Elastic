@@ -12,29 +12,30 @@ namespace mpbdmService.DataObjects
 {
     public class CustomLoginProvider : LoginProvider
     {
-        public const string ProviderName = "custom";
+        public static string ProviderName = "custom";
 
-        public override string Name
+        public override string Name{
+        get{
+            return getShardKey().ToString();
+        }
+        }
+        public Guid shardKey;
+        private Guid getShardKey()
         {
-            get { return ProviderName; }
+            if ( this.shardKey == null ) throw new NullReferenceException("ShardKey not set!");
+            return this.shardKey;
         }
 
-        protected override TokenInfo CreateTokenInfo(ClaimsIdentity claimsIdentity, ProviderCredentials credentialsClaim, string secretKey)
-        {
-            TokenInfo token = base.CreateTokenInfo(claimsIdentity, credentialsClaim, secretKey);
-            var stri = token.Token.ToString();
-            return token;
-        }
-
-        public CustomLoginProvider(IServiceTokenHandler tokenHandler)
+        public CustomLoginProvider(IServiceTokenHandler tokenHandler , Guid shardKey)
             : base(tokenHandler)
         {
             this.TokenLifetime = new TimeSpan(30, 0, 0, 0);
+            this.shardKey = shardKey;
+            CustomLoginProvider.ProviderName = shardKey.ToString();
         }
 
         public override void ConfigureMiddleware(IAppBuilder appBuilder, ServiceSettingsDictionary settings)
         {
-            
             return;
         }
 

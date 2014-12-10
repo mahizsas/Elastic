@@ -8,17 +8,18 @@ using mpbdmService.DTO;
 using mpbdmService.Models;
 using mpbdmService.DomainManager;
 using Microsoft.WindowsAzure.Mobile.Service.Security;
+using System;
 
 namespace mpbdmService.Controllers
 {
     [AuthorizeLevel(AuthorizationLevel.User)] 
     public class MobileGroupController : TableController<MobileGroup>
     {
-        private mpbdmContext<string> db;
+        private mpbdmContext<Guid> db;
         protected override void Initialize(HttpControllerContext controllerContext)
         {
             base.Initialize(controllerContext);
-            db = new mpbdmContext<string>();
+            db = new mpbdmContext<Guid>();
             this.DomainManager = new GroupsDomainManager(db, Request, Services);
         }
 
