@@ -16,22 +16,14 @@ namespace mpbdmService.DataObjects
 
         public override string Name{
         get{
-            return getShardKey().ToString();
+            return ProviderName;
         }
-        }
-        public Guid shardKey;
-        private Guid getShardKey()
-        {
-            if ( this.shardKey == null ) throw new NullReferenceException("ShardKey not set!");
-            return this.shardKey;
         }
 
-        public CustomLoginProvider(IServiceTokenHandler tokenHandler , Guid shardKey)
+        public CustomLoginProvider(IServiceTokenHandler tokenHandler )
             : base(tokenHandler)
         {
             this.TokenLifetime = new TimeSpan(30, 0, 0, 0);
-            this.shardKey = shardKey;
-            CustomLoginProvider.ProviderName = shardKey.ToString();
         }
 
         public override void ConfigureMiddleware(IAppBuilder appBuilder, ServiceSettingsDictionary settings)
@@ -48,9 +40,9 @@ namespace mpbdmService.DataObjects
 
             return serialized.ToObject<CustomLoginProviderCredentials>();
         }
-
-        public override ProviderCredentials CreateCredentials(ClaimsIdentity claimsIdentity)
+        public override ProviderCredentials CreateCredentials(ClaimsIdentity claimsIdentity )
         {
+            
             if (claimsIdentity == null)
             {
                 throw new ArgumentNullException("claimsIdentity");
@@ -59,9 +51,9 @@ namespace mpbdmService.DataObjects
             string username = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
             CustomLoginProviderCredentials credentials = new CustomLoginProviderCredentials
             {
-                UserId = this.TokenHandler.CreateUserId(this.Name, username)
+                UserId = this.TokenHandler.CreateUserId(this.Name, username),
+                ShardKey = claimsIdentity.FindFirst("shardKey").Value
             };
-
             return credentials;
         }
 
@@ -69,6 +61,7 @@ namespace mpbdmService.DataObjects
 
     public class CustomLoginProviderCredentials : ProviderCredentials
     {
+        public string ShardKey { get; set; }
         public CustomLoginProviderCredentials()
             : base(CustomLoginProvider.ProviderName)
         {

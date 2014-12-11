@@ -8,6 +8,7 @@ using mpbdmService.DataObjects;
 using mpbdmService.Models;
 using mpbdmService.DomainManager;
 using System;
+using mpbdmService.ElasticScale;
 
 namespace mpbdmService.Controllers
 {
@@ -20,32 +21,40 @@ namespace mpbdmService.Controllers
             db = new mpbdmContext<Guid>();
             DomainManager = new FavoritesDomainManager(db, Request, Services , User);
         }
+        private string getShardKey()
+        {
+            string shardKey = Sharding.FindShard(User);
+            db = new mpbdmContext<Guid>(WebApiConfig.ShardingObj.ShardMap, new Guid(shardKey), WebApiConfig.ShardingObj.connstring);
+            ((FavoritesDomainManager)DomainManager).Context = db;
+            ((FavoritesDomainManager)DomainManager).User = User;
+            return shardKey;
+        }
 
         // GET tables/MobileFavorites
         public IQueryable<MobileFavorites> GetAllMobileFavorites()
         {
-            ((FavoritesDomainManager)DomainManager).User = User;
+            getShardKey();
             return Query(); 
         }
 
         // GET tables/MobileFavorites/48D68C86-6EA6-4C25-AA33-223FC9A27959
         public SingleResult<MobileFavorites> GetMobileFavorites(string id)
         {
-            ((FavoritesDomainManager)DomainManager).User = User;
+            getShardKey();
             return Lookup(id);
         }
 
         // PATCH tables/MobileFavorites/48D68C86-6EA6-4C25-AA33-223FC9A27959
         public Task<MobileFavorites> PatchMobileFavorites(string id, Delta<MobileFavorites> patch)
         {
-            ((FavoritesDomainManager)DomainManager).User = User;
-             return UpdateAsync(id, patch);
+            getShardKey();
+            return UpdateAsync(id, patch);
         }
 
         // POST tables/MobileFavorites
         public async Task<IHttpActionResult> PostMobileFavorites(MobileFavorites item)
         {
-            ((FavoritesDomainManager)DomainManager).User = User;
+            getShardKey();
             MobileFavorites current = await InsertAsync(item);
             return CreatedAtRoute("Tables", new { id = current.Id }, current);
         }
@@ -53,8 +62,8 @@ namespace mpbdmService.Controllers
         // DELETE tables/MobileFavorites/48D68C86-6EA6-4C25-AA33-223FC9A27959
         public Task DeleteMobileFavorites(string id)
         {
-            ((FavoritesDomainManager)DomainManager).User = User;
-             return DeleteAsync(id);
+            getShardKey();
+            return DeleteAsync(id);
         }
 
 

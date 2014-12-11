@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using mpbdmService.ElasticScale;
 using System.Configuration;
+using Microsoft.Azure.SqlDatabase.ElasticScale.ShardManagement;
 
 namespace mpbdmService
 {
@@ -44,20 +45,13 @@ namespace mpbdmService
                 cfg.CreateMap<Favorites, MobileFavorites>().ReverseMap();
             });
 
-
-            // Sharding specific stuff
-            string server = "tcp:hx7y5ohy6t.database.windows.net,1433";
-            string shardmapmgrdb = "shardmap";
-            string connectionString = ConfigurationManager.ConnectionStrings["ElasticConnectionString"].ToString();
-            string shard1 = "shard0";
-            string shard2 = "shard1";
-            string company1 = "48344df7-4837-4144-b1c8-21203bea780d";
-            string company2 = "2c8c7462-d6ca-429c-9021-21203bea780d";
-
+            
             // sharding GLOBAL 
-            ShardingObj = new Sharding(server, shardmapmgrdb, connectionString);
-            ShardingObj.RegisterNewShard(server, shard1, connectionString, company1);
-            ShardingObj.RegisterNewShard(server, shard2, connectionString, company2);
+            ShardingObj = new Sharding();
+            
+            
+            //ShardingObj.RegisterNewShard(server, shard1, connectionString, company1);
+            //ShardingObj.RegisterNewShard(server, shard2, connectionString, company2);
 
             // Register the mapping of the tenant to the shard in the shard map.
             // After this step, DDR on the shard map can be used
