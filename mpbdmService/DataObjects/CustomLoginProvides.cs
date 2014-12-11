@@ -22,7 +22,7 @@ namespace mpbdmService.DataObjects
         public CustomLoginProvider(IServiceTokenHandler tokenHandler)
             : base(tokenHandler)
         {
-            this.TokenLifetime = new TimeSpan(30, 0, 0, 0);
+            this.TokenLifetime = new TimeSpan(0, 0, 0, 30);
         }
 
         public override void ConfigureMiddleware(IAppBuilder appBuilder, ServiceSettingsDictionary settings)
