@@ -25,7 +25,7 @@ namespace mpbdmService.Controllers
         // POST api/CustomRegistration
         public HttpResponseMessage Post(RegistrationRequest registrationRequest)
         {
-            if (!Regex.IsMatch(registrationRequest.email, "^([a-zA-Z0-9]{1,})@([a-z]{2,}).[a-z]{2,}$"))
+            if (!Regex.IsMatch(registrationRequest.email, "^([a-z.A-Z0-9]{1,})@([a-z]{2,}).[a-z]{2,}$"))
             {
                 return this.Request.CreateResponse(HttpStatusCode.BadRequest, "Invalid email!");
             }
@@ -66,7 +66,7 @@ namespace mpbdmService.Controllers
                         {
                             if (registrationRequest.CompanyName == null || registrationRequest.CompanyAddress == null)
                             {
-                                return this.Request.CreateResponse(HttpStatusCode.BadRequest, "Company under this email domain doesn't exist! To create a company with your registration please provide CompanyName and CompanyAddress parameters");
+                                return this.Request.CreateResponse(HttpStatusCode.Forbidden, "Company under this email domain doesn't exist! To create a company with your registration please provide CompanyName and CompanyAddress parameters");
                             }
 
 
@@ -96,8 +96,11 @@ namespace mpbdmService.Controllers
             // MUST RECHECK CORRECT DB!!!!!!!!!!!
             if( context == null )
                 context = new mpbdmContext<Guid>(WebApiConfig.ShardingObj.ShardMap, shardKey, WebApiConfig.ShardingObj.connstring);
-
-            Account account = context.Accounts.Where(a => a.User.Email == registrationRequest.email).SingleOrDefault();
+            Account account = null;
+         
+            var aa = context.Set<Account>();
+            var bb = aa.Where(a => a.User.Email == registrationRequest.email);
+            account = bb.FirstOrDefault();
             if (account != null)
             {
                 return this.Request.CreateResponse(HttpStatusCode.BadRequest, "Email already exists");

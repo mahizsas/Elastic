@@ -88,7 +88,7 @@ namespace mpbdmService.Models
         private static DbConnection CreateDDRConnection(ShardMap shardMap, T shardingKey, string connectionStr)
         {
             // No initialization
-            Database.SetInitializer<mpbdmContext<T>>(null);
+            Database.SetInitializer<mpbdmContext<T>>(new CreateDatabaseIfNotExists<mpbdmContext<T>>());
 
             // Ask shard map to broker a validated connection for the given key
             SqlConnection conn = shardMap.OpenConnectionForKey<T>(shardingKey, connectionStr, ConnectionOptions.Validate);

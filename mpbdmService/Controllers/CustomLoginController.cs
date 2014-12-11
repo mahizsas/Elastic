@@ -63,7 +63,7 @@ namespace mpbdmService.Controllers
                 if (CustomLoginProviderUtils.slowEquals(incoming, account.SaltedAndHashedPassword))
                 {
                     ClaimsIdentity claimsIdentity = new ClaimsIdentity();
-                    claimsIdentity.AddClaim(new Claim(ClaimTypes.NameIdentifier, account.Username));
+                    claimsIdentity.AddClaim(new Claim(ClaimTypes.NameIdentifier, account.User.Email));
                     // Custom Claim must be added to CustomLoginProvider too !! 
                     claimsIdentity.AddClaim(new Claim("shardKey", account.User.CompaniesID));
                     var  customLoginProvider = new CustomLoginProvider(handler);

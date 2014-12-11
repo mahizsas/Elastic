@@ -47,6 +47,11 @@ namespace mpbdmService.DomainManager
 
         public override System.Threading.Tasks.Task<bool> DeleteAsync(string id)
         {
+            IQueryable<Contacts> query = Context.Set<Contacts>().Where(s=>s.GroupsID == id);
+            foreach (Contacts cont in query)
+            {
+                cont.Deleted = true;
+            }
             return base.DeleteItemAsync(id);
         }
 
