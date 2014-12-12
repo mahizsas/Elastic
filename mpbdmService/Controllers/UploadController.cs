@@ -88,7 +88,7 @@ namespace mpbdmService.Controllers
                     cont.Deleted = false;
                     cont.Visible = true;
 
-                    var chk = db.Set<Contacts>().Where(s => s.Email == cont.Email && s.LastName == cont.LastName).FirstOrDefault();
+                    var chk = db.Set<Contacts>().Where(s => s.Email == cont.Email && s.LastName == cont.LastName && s.Groups.Companies.Id == shardKey).FirstOrDefault();
                     if (chk != null)
                         continue;
 

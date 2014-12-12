@@ -68,13 +68,20 @@ namespace mpbdmService.DomainManager
             Mapper.Map<MobileFavorites, Favorites>(data, newData);
 
             var user = User as ServiceUser;
-            newData.Id = Guid.NewGuid().ToString();
-            newData.UsersID = user.Id;
 
-            this.Context.Set<Favorites>().Add(newData);
-
+            var chk = this.Context.Set<Favorites>().Where(s => s.ContactsID == data.ContactsID).Where(s=>s.UsersID == user.Id).FirstOrDefault();
+            if (chk != null)
+            {
+                chk.Visible = true;
+                chk.Deleted = false;
+            }
+            else
+            {
+                newData.Id = Guid.NewGuid().ToString();
+                newData.UsersID = user.Id;
+                this.Context.Set<Favorites>().Add(newData);
+            }
             await this.Context.SaveChangesAsync();
-
             return Mapper.Map<MobileFavorites>(newData);
         }
     }

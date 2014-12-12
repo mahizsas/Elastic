@@ -279,6 +279,7 @@
     <None Include="Properties\PublishProfiles\elastic - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\elastic - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\mobile-elastic %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\mobile-elastic %283%29.pubxml" />
     <None Include="Properties\PublishProfiles\mobile-elastic.pubxml" />
     <None Include="Properties\PublishProfiles\mobile-mpbdm.pubxml" />
   </ItemGroup>

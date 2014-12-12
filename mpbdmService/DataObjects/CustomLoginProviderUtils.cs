@@ -25,7 +25,7 @@ namespace mpbdmService.DataObjects
     }
     public class ChangePassRequest
     {
-        public String username { get; set; }
+        public String email { get; set; }
         public String password { get; set; }
         public String oldpass { get; set; }
         public String repass { get; set; }
