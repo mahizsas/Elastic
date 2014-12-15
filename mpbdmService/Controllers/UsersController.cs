@@ -33,9 +33,8 @@ namespace mpbdmService.Controllers
         // GET tables/Users
         public IQueryable<Users> GetAllUsers()
         {
-            getShardKey();
-            var cuser = User as ServiceUser;
-            return Query().Where(user => user.Id == cuser.Id); 
+            string shardKey = getShardKey();
+            return Query().Where(user => user.CompaniesID == shardKey);
         }
 
         // GET tables/Users/48D68C86-6EA6-4C25-AA33-223FC9A27959
