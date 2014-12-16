@@ -72,6 +72,10 @@ namespace mpbdmService.DomainManager
             {
                 newData.Id = Guid.NewGuid().ToString();
             }
+            else
+            {
+                newData.Id = data.Id;
+            }
             newData.UsersID = user.Id;
 
             this.Context.Set<Favorites>().Add(newData);
