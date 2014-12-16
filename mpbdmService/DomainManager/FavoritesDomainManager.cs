@@ -68,7 +68,10 @@ namespace mpbdmService.DomainManager
             Mapper.Map<MobileFavorites, Favorites>(data, newData);
 
             var user = User as ServiceUser;
-            newData.Id = Guid.NewGuid().ToString();
+            if (data.Id == null)
+            {
+                newData.Id = Guid.NewGuid().ToString();
+            }
             newData.UsersID = user.Id;
 
             this.Context.Set<Favorites>().Add(newData);

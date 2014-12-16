@@ -77,7 +77,10 @@ namespace mpbdmService.DomainManager
             Mapper.Map<MobileGroup, Groups>(data, newData);
 
             var user = User as ServiceUser;
-            newData.Id = Guid.NewGuid().ToString();
+            if (data.Id == null)
+            {
+                newData.Id = Guid.NewGuid().ToString();
+            }
             newData.CompaniesID = GetCompanyId(user.Id);
             newData.Visible = true;
 
