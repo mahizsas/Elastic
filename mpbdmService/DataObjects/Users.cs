@@ -14,6 +14,8 @@ namespace mpbdmService.DataObjects
 
         public string Email { get; set; }
 
+        public string ImageUrl { get; set; }
+
         public virtual string CompaniesID { get; set; }
 
         public virtual Companies Companies { get; set; }

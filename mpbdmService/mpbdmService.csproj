@@ -236,6 +236,7 @@
     <Compile Include="Controllers\MobileFavoriteController.cs" />
     <Compile Include="Controllers\MobileGroupController.cs" />
     <Compile Include="Controllers\UploadController.cs" />
+    <Compile Include="Controllers\UploadImageController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="DataObjects\Account.cs" />
     <Compile Include="DataObjects\Companies.cs" />
@@ -280,6 +281,7 @@
     <None Include="Properties\PublishProfiles\elastic - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\mobile-elastic %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\mobile-elastic %283%29.pubxml" />
+    <None Include="Properties\PublishProfiles\mobile-elastic %284%29.pubxml" />
     <None Include="Properties\PublishProfiles\mobile-elastic.pubxml" />
     <None Include="Properties\PublishProfiles\mobile-mpbdm.pubxml" />
   </ItemGroup>
