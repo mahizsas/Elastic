@@ -265,6 +265,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\CustomRegistrationController.cs" />
+    <None Include="Properties\PublishProfiles\mobile-elastic.pubxml" />
     <None Include="Properties\PublishProfiles\mobile-mpbdm %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\mobile-mpbdm %283%29.pubxml" />
     <None Include="Properties\PublishProfiles\mobile-mpbdm.pubxml" />

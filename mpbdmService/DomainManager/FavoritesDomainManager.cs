@@ -11,17 +11,19 @@ using System.Net.Http;
 using System.Security.Principal;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.OData;
 
 namespace mpbdmService.DomainManager
 {
     public class FavoritesDomainManager : MappedEntityDomainManager<MobileFavorites, Favorites>
     {
         public IPrincipal User;
+        private EntityDomainManager<Favorites> domainManager;
         public FavoritesDomainManager(mpbdmContext context, HttpRequestMessage request, ApiServices services, IPrincipal User)
             : base(context, request, services , true)
         {
             this.User = User;
-            
+            domainManager = new EntityDomainManager<Favorites>(context, Request, Services, true);
         }
 
 
@@ -31,7 +33,7 @@ namespace mpbdmService.DomainManager
             var currentUser = User as ServiceUser;
             var currentId = currentUser.Id;
             // REMEMBER TO USE Where(s=>s.Deleted==false) CAUSE I M not using base.QUERY()
-            IQueryable<MobileFavorites> favs = this.Context.Set<Favorites>().Where(s=>s.Deleted == false).Where(s => s.UsersID == currentId ).Select(Mapper.Map<MobileFavorites>).AsQueryable();
+            IQueryable<MobileFavorites> favs = domainManager.Query().Where(s=>s.Deleted == false).Where(s => s.UsersID == currentId ).Select(Mapper.Map<MobileFavorites>).AsQueryable();
             return favs;
         }
 
@@ -45,20 +47,21 @@ namespace mpbdmService.DomainManager
             return base.LookupEntity(s => s.Id == id);
         }
 
-        public async override System.Threading.Tasks.Task<MobileFavorites> UpdateAsync(string id, System.Web.Http.OData.Delta<MobileFavorites> patch)
+        public async override System.Threading.Tasks.Task<MobileFavorites> UpdateAsync(string id, Delta<MobileFavorites> patch)
         {
+
+            IEnumerable<string> names = patch.GetChangedPropertyNames();
+            var np = new Delta<Favorites>();
+            foreach (string name in names)
+            {
+                object obj;
+                patch.TryGetPropertyValue(name, out obj);
+                np.TrySetPropertyValue(name, obj);
+            }
+            await domainManager.UpdateAsync(id, np);
+
+
             Favorites data = await this.Context.Set<Favorites>().FindAsync(id);
-
-            MobileFavorites mobfav = Mapper.Map<Favorites , MobileFavorites>(data);
-            
-            var a = patch.GetChangedPropertyNames();
-
-            patch.Patch(mobfav);
-
-            Mapper.Map<MobileFavorites, Favorites>(mobfav, data);
-            
-            await this.Context.SaveChangesAsync();
-
             return Mapper.Map<MobileFavorites>(data);
         }
         public async override System.Threading.Tasks.Task<MobileFavorites> InsertAsync(MobileFavorites data)
@@ -78,9 +81,7 @@ namespace mpbdmService.DomainManager
             }
             newData.UsersID = user.Id;
 
-            this.Context.Set<Favorites>().Add(newData);
-
-            await this.Context.SaveChangesAsync();
+            await domainManager.InsertAsync(newData);
 
             return Mapper.Map<MobileFavorites>(newData);
         }
