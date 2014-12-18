@@ -15,15 +15,19 @@ using System.Web.Http.OData;
 
 namespace mpbdmService.DomainManager
 {
+    // TODO: Need to fix architect 
+    //       Need to Clear code 
+    //       Need to move data management to Entity Domain Manager
+
     public class FavoritesDomainManager : MappedEntityDomainManager<MobileFavorites, Favorites>
     {
         public IPrincipal User;
         private EntityDomainManager<Favorites> domainManager;
-        public FavoritesDomainManager(mpbdmContext context, HttpRequestMessage request, ApiServices services, IPrincipal User)
+        public FavoritesDomainManager(mpbdmContext<Guid> context, HttpRequestMessage request, ApiServices services, IPrincipal User)
             : base(context, request, services , true)
         {
             this.User = User;
-            domainManager = new EntityDomainManager<Favorites>(context, Request, Services, true);
+            domainManager = new EntityDomainManager<Favorites>(context, request, services , true);
         }
 
 
@@ -59,8 +63,7 @@ namespace mpbdmService.DomainManager
                 np.TrySetPropertyValue(name, obj);
             }
             await domainManager.UpdateAsync(id, np);
-
-
+            // Need to fix the architecture
             Favorites data = await this.Context.Set<Favorites>().FindAsync(id);
             return Mapper.Map<MobileFavorites>(data);
         }
@@ -71,19 +74,36 @@ namespace mpbdmService.DomainManager
             Mapper.Map<MobileFavorites, Favorites>(data, newData);
 
             var user = User as ServiceUser;
-            if (data.Id == null)
+
+            var chk = domainManager.Query().Where(s => s.ContactsID == data.ContactsID).Where(s=>s.UsersID == user.Id).FirstOrDefault();
+            if (chk != null)
             {
-                newData.Id = Guid.NewGuid().ToString();
+                var np = new Delta<Favorites>();
+                np.TrySetPropertyValue("Deleted", false);
+                np.TrySetPropertyValue("Visible", true); // only for Version Consistency
+                await domainManager.UpdateAsync(chk.Id , np );
+                newData = chk;
             }
             else
             {
-                newData.Id = data.Id;
+                if (data.Id == null)
+                {
+                    newData.Id = Guid.NewGuid().ToString();
+                }
+                else
+                {
+                    newData.Id = data.Id;
+                }
+                newData.UsersID = user.Id;
+                await domainManager.InsertAsync(newData);
             }
-            newData.UsersID = user.Id;
-
-            await domainManager.InsertAsync(newData);
-
             return Mapper.Map<MobileFavorites>(newData);
+        }
+
+        internal void setContext(mpbdmContext<Guid> db)
+        {
+            this.Context = db;
+            this.domainManager.Context = db;
         }
     }
 }

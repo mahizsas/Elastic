@@ -19,10 +19,10 @@ namespace mpbdmService.Controllers
         protected override void Initialize(HttpControllerContext controllerContext)
         {
             base.Initialize(controllerContext);
-            mpbdmContext context = new mpbdmContext();
-            DomainManager = new EntityDomainManager<Favorites>(context, Request, Services);
+            db= new mpbdmContext<Guid>();
+            DomainManager = new EntityDomainManager<Favorites>(db, Request, Services);
         }
-        mpbdmContext db = new mpbdmContext();
+        mpbdmContext<Guid> db;
 
         // GET tables/Favorites
         public IQueryable<Favorites> GetAllFavorites()

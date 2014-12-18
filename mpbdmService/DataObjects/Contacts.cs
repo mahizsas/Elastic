@@ -16,6 +16,8 @@ namespace mpbdmService.DataObjects
 
         public string Email { get; set; }
 
+        public string ImageUrl { get; set; }
+
         public bool Visible { get; set; }
 
         public virtual string GroupsID { get; set; }

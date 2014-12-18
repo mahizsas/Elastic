@@ -7,6 +7,12 @@ using Microsoft.WindowsAzure.Mobile.Service;
 using mpbdmService.DataObjects;
 using mpbdmService.Models;
 using Microsoft.WindowsAzure.Mobile.Service.Security;
+using System;
+using System.Diagnostics;
+using System.Security.Claims;
+using Newtonsoft.Json.Linq;
+using System.Security.Principal;
+using mpbdmService.ElasticScale;
 
 namespace mpbdmService.Controllers
 {
@@ -16,40 +22,40 @@ namespace mpbdmService.Controllers
         protected override void Initialize(HttpControllerContext controllerContext)
         {
             base.Initialize(controllerContext);
-            mpbdmContext context = new mpbdmContext();
-            DomainManager = new EntityDomainManager<Companies>(context, Request, Services);
+            db = new mpbdmContext<Guid>();
+            DomainManager = new EntityDomainManager<Companies>(db, Request, Services);
         }
-        mpbdmContext db = new mpbdmContext();
+        private mpbdmContext<Guid> db;
 
+        /*
+         * Dont be misleading it get the shardKey we need on each request
+         * BUT sets the DomainManager's context to look at the correct shard
+         */
+        private string getShardKey()
+        {
+            string shardKey = Sharding.FindShard(User);
+            db = new mpbdmContext<Guid>(WebApiConfig.ShardingObj.ShardMap, new Guid(shardKey), WebApiConfig.ShardingObj.connstring);
+            ((EntityDomainManager<Companies>)DomainManager).Context = db;
+            return shardKey;
+        }
         // GET tables/Companies
         public IQueryable<Companies> GetAllCompanies()
         {
-            //var currentId = "Google:105535740556221909032";
-            var currentUser = User as ServiceUser;
-            var currentId = currentUser.Id;
-            IQueryable<Companies> companies = from c in db.Companies
-                                            join a in db.Users
-                                            on c.Id equals a.CompaniesID
-                                            where a.Id == currentId
-                                            select c;
-            return companies;
+            string shardKey = getShardKey();
+            return Query().Where(s=>s.Id == shardKey);
         }
-
-        // GET tables/Companies/48D68C86-6EA6-4C25-AA33-223FC9A27959
-        public SingleResult<Companies> GetCompanies(string id)
-        {
-            return Lookup(id);
-        }
-
+        
         // PATCH tables/Companies/48D68C86-6EA6-4C25-AA33-223FC9A27959
         public Task<Companies> PatchCompanies(string id, Delta<Companies> patch)
         {
+            getShardKey();
             return UpdateAsync(id, patch);
         }
 
         // POST tables/Companies
         public async Task<IHttpActionResult> PostCompanies(Companies item)
         {
+            getShardKey();
             Companies current = await InsertAsync(item);
             return CreatedAtRoute("Tables", new { id = current.Id }, current);
         }
@@ -57,6 +63,7 @@ namespace mpbdmService.Controllers
         // DELETE tables/Companies/48D68C86-6EA6-4C25-AA33-223FC9A27959
         public Task DeleteCompanies(string id)
         {
+            getShardKey();
             return DeleteAsync(id);
         }
     }

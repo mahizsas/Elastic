@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Net.Http.Headers;
 using Microsoft.WindowsAzure.Mobile.Service.Security;
 using Newtonsoft.Json.Linq;
+using mpbdmService.ElasticScale;
 
 namespace mpbdmService.Controllers
 {
@@ -23,11 +24,12 @@ namespace mpbdmService.Controllers
         protected override void Initialize(HttpControllerContext controllerContext)
         {
             base.Initialize(controllerContext);
-            mpbdmContext context = new mpbdmContext();
-            DomainManager = new EntityDomainManager<Contacts>(context, Request, Services , true);
+            db = new mpbdmContext<Guid>();
+            DomainManager = new EntityDomainManager<Contacts>(db, Request, Services , true);
             
         }
-        mpbdmContext db = new mpbdmContext();
+        private mpbdmContext<Guid> db;
+
         private string GetCompanyId(string currentId)
         {
             var user = db.Users.Where(s => s.Id == currentId).FirstOrDefault();
@@ -35,26 +37,18 @@ namespace mpbdmService.Controllers
             return user.CompaniesID;
         }
 
+        private string getShardKey()
+        {
+            string shardKey = Sharding.FindShard(User);
+            db = new mpbdmContext<Guid>(WebApiConfig.ShardingObj.ShardMap, new Guid(shardKey), WebApiConfig.ShardingObj.connstring);
+            ((EntityDomainManager<Contacts>)DomainManager).Context = db;
+            return shardKey;
+        }
+
         // GET tables/Contacts
         public IQueryable<Contacts> GetAllContacts()
         {
-            //var currentId = "Google:105535740556221909032";
-            var currentUser = User as ServiceUser;
-            var currentId = currentUser.Id;
-            //IQueryable<Contacts> contacts = from f in db.Contacts
-            //                                join g in
-            //                                    (from c in db.Groups
-            //                                     join a in
-            //                                         (from d in db.Companies
-            //                                          join e in db.Users
-            //                                          on d.Id equals e.CompaniesID
-            //                                          where e.Id == currentId
-            //                                          select d)
-            //                                     on c.CompaniesID equals a.Id
-            //                                     select c)
-            //                            on f.GroupsID equals g.Id
-            //                            select f;
-            var cid = GetCompanyId(currentId);
+            string cid = getShardKey();
             IQueryable<Contacts>  contacts = Query().Where(s => s.Groups.CompaniesID == cid);
             return contacts;
         }
@@ -62,12 +56,14 @@ namespace mpbdmService.Controllers
         // GET tables/Contacts/48D68C86-6EA6-4C25-AA33-223FC9A27959
         public SingleResult<Contacts> GetContacts(string id)
         {
+            getShardKey();
             return Lookup(id);
         }
 
         // PATCH tables/Contacts/48D68C86-6EA6-4C25-AA33-223FC9A27959
         public  Task<Contacts> PatchContacts(string id, Delta<Contacts> patch)
         {
+            getShardKey();
             //async
             return UpdateAsync(id, patch);
 
@@ -117,18 +113,19 @@ namespace mpbdmService.Controllers
         // POST tables/Contacts
         public async Task<IHttpActionResult> PostContacts(Contacts item)
         {
+            getShardKey();
             if (item.GroupsID == null)
             {
                 return null;
             }
             Contacts current = await InsertAsync(item);
-            
             return CreatedAtRoute("Tables", new { id = current.Id }, current);
         }
 
         // DELETE tables/Contacts/48D68C86-6EA6-4C25-AA33-223FC9A27959
         public Task DeleteContacts(string id)
         {
+            getShardKey();
             return this.DeleteAsync(id);
         }
     }

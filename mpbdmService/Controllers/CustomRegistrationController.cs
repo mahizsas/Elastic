@@ -10,6 +10,10 @@ using System.Web;
 using System.Web.Http;
 using mpbdmService.Models;
 using System.Text.RegularExpressions;
+using Microsoft.Azure.SqlDatabase.ElasticScale.Query;
+using System.Data;
+using mpbdmService.ElasticScale;
+using Microsoft.Azure.SqlDatabase.ElasticScale.ShardManagement;
 
 namespace mpbdmService.Controllers
 {
@@ -21,29 +25,95 @@ namespace mpbdmService.Controllers
         // POST api/CustomRegistration
         public HttpResponseMessage Post(RegistrationRequest registrationRequest)
         {
-            if (!Regex.IsMatch(registrationRequest.username, "^[a-zA-Z0-9]{4,}$"))
+            if (!Regex.IsMatch(registrationRequest.email, "^([a-z.A-Z0-9]{1,})@([a-z]{2,}).[a-z]{2,}$"))
             {
-                return this.Request.CreateResponse(HttpStatusCode.BadRequest, "Invalid username (at least 4 chars, alphanumeric only)");
+                return this.Request.CreateResponse(HttpStatusCode.BadRequest, "Invalid email!");
             }
             else if (registrationRequest.password.Length < 8)
             {
                 return this.Request.CreateResponse(HttpStatusCode.BadRequest, "Invalid password (at least 8 chars required)");
             }
 
-            mpbdmContext context = new mpbdmContext();
-            Account account = context.Accounts.Where(a => a.Username == registrationRequest.username).SingleOrDefault();
+            // MUST FIND COMPANY BY EMAIL
+            // CREATE a MULTISHARD COMMAND
+            // SEARCH BY EMAIL
+            mpbdmContext<Guid> context = null; 
+            Guid shardKey;
+            using (MultiShardConnection conn = new MultiShardConnection(WebApiConfig.ShardingObj.ShardMap.GetShards(),WebApiConfig.ShardingObj.connstring ))
+            {
+                using (MultiShardCommand cmd = conn.CreateCommand())
+                {
+                    // Get emailDomain 
+                    char[] papaki = new char[1];
+                    papaki[0] = '@';
+                    // SQL INJECTION SECURITY ISSUE
+                    string emailDomain = registrationRequest.email.Split(papaki).Last();
+
+                    // CHECK SCHEMA
+                    cmd.CommandText = "SELECT Id FROM [mpbdm].[Companies] WHERE Email LIKE '%" + emailDomain + "'";
+                    cmd.CommandType = CommandType.Text;
+                    cmd.ExecutionOptions = MultiShardExecutionOptions.IncludeShardNameColumn;
+                    cmd.ExecutionPolicy = MultiShardExecutionPolicy.PartialResults;
+                    
+                    using (MultiShardDataReader sdr = cmd.ExecuteReader())
+                    {
+                        bool res = sdr.Read();
+                        if (res != false)
+                        {
+                            shardKey = new Guid(sdr.GetString(0));
+                        }
+                        else
+                        {
+                            if (registrationRequest.CompanyName == null || registrationRequest.CompanyAddress == null)
+                            {
+                                return this.Request.CreateResponse(HttpStatusCode.Forbidden, "Company under this email domain doesn't exist! To create a company with your registration please provide CompanyName and CompanyAddress parameters");
+                            }
+
+
+                            Companies comp = new Companies();
+                            comp.Id = Guid.NewGuid().ToString();
+
+                            comp.Name = registrationRequest.CompanyName;
+                            comp.Address = registrationRequest.CompanyAddress;
+                            comp.Email = registrationRequest.email;
+                            comp.Deleted = false;
+
+                            // SHARDING Find where to save the new company
+                            Shard shard = WebApiConfig.ShardingObj.FindRoomForCompany();
+                            WebApiConfig.ShardingObj.RegisterNewShard(shard.Location.Database , comp.Id);
+                            //Connect to the db registered above
+                            shardKey = new Guid(comp.Id);
+                            context = new mpbdmContext<Guid>(WebApiConfig.ShardingObj.ShardMap, shardKey, WebApiConfig.ShardingObj.connstring);
+                            // Add to the db
+                            context.Companies.Add(comp);
+                            context.SaveChanges();
+                        }
+                    }
+                }
+            }
+            //////////////////////////////////////////////////////////////////////
+
+            // MUST RECHECK CORRECT DB!!!!!!!!!!!
+            if( context == null )
+                context = new mpbdmContext<Guid>(WebApiConfig.ShardingObj.ShardMap, shardKey, WebApiConfig.ShardingObj.connstring);
+            Account account = null;
+         
+            var aa = context.Set<Account>();
+            var bb = aa.Where(a => a.User.Email == registrationRequest.email);
+            account = bb.FirstOrDefault();
             if (account != null)
             {
-                return this.Request.CreateResponse(HttpStatusCode.BadRequest, "Username already exists");
+                return this.Request.CreateResponse(HttpStatusCode.BadRequest, "Email already exists");
             }
             else
             {
                 byte[] salt = CustomLoginProviderUtils.generateSalt();
 
-                string compId = "2c8c7462-d6ca-429c-9021-21203bea780d";
+                string compId = shardKey.ToString();
+
                 Users newUser = new Users
                 {
-                    Id = CustomLoginProvider.ProviderName + ":" + registrationRequest.username,
+                    Id = CustomLoginProvider.ProviderName + ":" + registrationRequest.email,
                     CompaniesID = compId,
                     FirstName = registrationRequest.firstName,
                     LastName = registrationRequest.lastName,
@@ -53,14 +123,22 @@ namespace mpbdmService.Controllers
                 Account newAccount = new Account
                 {
                     Id = Guid.NewGuid().ToString(),
-                    Username = registrationRequest.username,
+                    //Username = registrationRequest.username,
                     Salt = salt,
                     SaltedAndHashedPassword = CustomLoginProviderUtils.hash(registrationRequest.password, salt),
                     User = newUser
                 };
-                
+
+                context.Users.Add(newUser);
                 context.Accounts.Add(newAccount);
-                context.SaveChanges();
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    var a = ex.InnerException;
+                }
                 return this.Request.CreateResponse(HttpStatusCode.Created);
             }
         }

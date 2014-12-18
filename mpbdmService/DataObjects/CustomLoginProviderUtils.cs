@@ -20,11 +20,12 @@ namespace mpbdmService.DataObjects
     public class LoginRequest
     {
         public String username { get; set; }
+        public String email { get; set; }
         public String password { get; set; }
     }
     public class ChangePassRequest
     {
-        public String username { get; set; }
+        public String email { get; set; }
         public String password { get; set; }
         public String oldpass { get; set; }
         public String repass { get; set; }
@@ -32,12 +33,16 @@ namespace mpbdmService.DataObjects
 
     public class RegistrationRequest
     {
+        //Old only for consistensy
         public String username { get; set; }
         public String password { get; set; }
         public String repass { get; set; }
         public string firstName { get; set; }
         public string lastName { get; set; }
         public string email { get; set; }
+        public string CompanyName { get; set; }
+        public string CompanyAddress { get; set; }
+
 
     }
 

@@ -9,11 +9,15 @@ using AutoMapper;
 using mpbdmService.DTO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using mpbdmService.ElasticScale;
+using System.Configuration;
+using Microsoft.Azure.SqlDatabase.ElasticScale.ShardManagement;
 
 namespace mpbdmService
 {
     public static class WebApiConfig
     {
+        public static Sharding ShardingObj;
         public static void Register()
         {
             // Use this class to set configuration options for your mobile service
@@ -32,23 +36,39 @@ namespace mpbdmService
             //settings.Formatting = Formatting.Indented;
             //settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
 
-            Database.SetInitializer(new mpbdmInitializer());
-
+            // Elastic Scale must ensure data consistency
+            //Database.SetInitializer(new mpbdmInitializer());
+            
             Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<Groups, MobileGroup>().ReverseMap();
                 cfg.CreateMap<Favorites, MobileFavorites>().ReverseMap();
             });
 
+            
+            // sharding GLOBAL 
+            ShardingObj = new Sharding();
+            
+            
+            //ShardingObj.RegisterNewShard(server, shard1, connectionString, company1);
+            //ShardingObj.RegisterNewShard(server, shard2, connectionString, company2);
 
-
+            // Register the mapping of the tenant to the shard in the shard map.
+            // After this step, DDR on the shard map can be used
+            /*
+            PointMapping<int> mapping;
+            if (!this.ShardMap.TryGetMappingForKey(key, out mapping))
+            {
+                this.ShardMap.CreatePointMapping(key, shard);
+            }
+            //*/
         }
     }
 
-    public class mpbdmInitializer : ClearDatabaseSchemaIfModelChanges<mpbdmContext>
-                                    //ClearDatabaseSchemaAlways<mpbdmContext>
+    public class mpbdmInitializer : ClearDatabaseSchemaIfModelChanges<mpbdmContext<Guid>> 
+                                    //ClearDatabaseSchemaAlways<mpbdmContext<Guid>>
     {
-        protected override void Seed(mpbdmContext context)
+        protected override void Seed(mpbdmContext<Guid> context)
         {
         
 
@@ -59,8 +79,8 @@ namespace mpbdmService
             int count_companies = 0;
             List<Companies> companies = new List<Companies>
             {
-                new Companies { Id = Guid.NewGuid().ToString(), Name = "Sieben", Address = "Αθήνα" , Email = "sieben@sieben.gr"},
-                new Companies { Id = Guid.NewGuid().ToString(), Name = "Coca-Cola", Address = "Αθήνα", Email = "coca@cola.com"},
+                new Companies { Id = "2c8c7462-d6ca-429c-9021-21203bea780d", Name = "Sieben", Address = "Αθήνα" , Email = "sieben@sieben.gr"},
+                new Companies { Id = "48344df7-4837-4144-b1c8-6470aeb9dae4", Name = "Coca-Cola", Address = "Αθήνα", Email = "coca@cola.com"},
             };
 
             foreach (Companies company in companies)

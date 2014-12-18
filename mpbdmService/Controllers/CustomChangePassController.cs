@@ -1,6 +1,7 @@
 ﻿using Microsoft.WindowsAzure.Mobile.Service;
 using Microsoft.WindowsAzure.Mobile.Service.Security;
 using mpbdmService.DataObjects;
+using mpbdmService.ElasticScale;
 using mpbdmService.Models;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ using System.Web.Http;
 
 namespace mpbdmService.Controllers
 {
-    [AuthorizeLevel(AuthorizationLevel.Anonymous)]
+    [AuthorizeLevel(AuthorizationLevel.User)]
     public class CustomChangePassController : ApiController
     {
         public ApiServices Services { get; set; }
@@ -22,8 +23,10 @@ namespace mpbdmService.Controllers
         // POST api/CustomLogin
         public HttpResponseMessage Post(ChangePassRequest changeRequest)
         {
-            mpbdmContext context = new mpbdmContext();
-            Account account = context.Accounts.Where(a => a.Username == changeRequest.username).SingleOrDefault();
+            string shardKey = Sharding.FindShard(User);
+            // NEED TO RECHECK CONTEXT MUST DETERMINE COMPANY -> MUST FIND CORRECT DataBase
+            mpbdmContext<Guid> context = new mpbdmContext<Guid>(WebApiConfig.ShardingObj.ShardMap, new Guid(shardKey), WebApiConfig.ShardingObj.connstring);
+            Account account = context.Accounts.Include("User").Where(a => a.User.Email == changeRequest.email).SingleOrDefault();
             if (account != null)
             {
                 byte[] incoming = CustomLoginProviderUtils.hash(changeRequest.oldpass, account.Salt);
@@ -40,7 +43,7 @@ namespace mpbdmService.Controllers
                     return this.Request.CreateResponse(HttpStatusCode.BadRequest, "Passes don't match");
                 }
             }
-            return this.Request.CreateResponse(HttpStatusCode.Unauthorized, "Invalid username or password");
+            return this.Request.CreateResponse(HttpStatusCode.Unauthorized, "Invalid email or password");
         }
     }
 }

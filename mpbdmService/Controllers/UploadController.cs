@@ -14,10 +14,13 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Configuration;
+using Microsoft.WindowsAzure.Mobile.Service.Security;
+using mpbdmService.ElasticScale;
 
 
 namespace mpbdmService.Controllers
 {
+    [AuthorizeLevel(AuthorizationLevel.User)] 
     public class UploadController : ApiController
     {
         // GET api/<controller>
@@ -32,9 +35,8 @@ namespace mpbdmService.Controllers
             return "value";
         }
 
-        public async Task<HttpResponseMessage> Post( string groupsId )
+        public async Task<HttpResponseMessage> Post(string groupsId )
         {
-            
             CloudStorageAccount acc = CloudStorageAccount.Parse(ConfigurationManager.ConnectionStrings["Azure"].ConnectionString);
             CloudBlobClient blobClient = acc.CreateCloudBlobClient();
             CloudBlobContainer photoContainer = blobClient.GetContainerReference("temp");
@@ -69,8 +71,8 @@ namespace mpbdmService.Controllers
 
                 HSSFSheet sheet = (HSSFSheet)templateWorkbook.GetSheet("Sheet1");
 
-
-                mpbdmContext db = new mpbdmContext();
+                string shardKey = Sharding.FindShard(User);
+                mpbdmContext<Guid> db = new mpbdmContext<Guid>(WebApiConfig.ShardingObj.ShardMap, new Guid(shardKey), WebApiConfig.ShardingObj.connstring);
                 for (int i = 1; true; i++)
                 {
                     var row = sheet.GetRow(i);
@@ -81,12 +83,12 @@ namespace mpbdmService.Controllers
                     cont.LastName = row.GetCell(1).RichStringCellValue.String;
                     cont.Email = row.GetCell(2).RichStringCellValue.String;
                     cont.Phone = row.GetCell(3).NumericCellValue.ToString();
-                    cont.GroupsID = ( groupsId == null ) ? row.GetCell(4).RichStringCellValue.String : groupsId;
+                    cont.GroupsID = ( groupsId == "valueUndefined" ) ? row.GetCell(4).RichStringCellValue.String : groupsId;
                     cont.Id = Guid.NewGuid().ToString();
                     cont.Deleted = false;
                     cont.Visible = true;
 
-                    var chk = db.Set<Contacts>().Where(s => s.Email == cont.Email && s.LastName == cont.LastName).FirstOrDefault();
+                    var chk = db.Set<Contacts>().Where(s => s.Email == cont.Email && s.LastName == cont.LastName && s.Groups.Companies.Id == shardKey).FirstOrDefault();
                     if (chk != null)
                         continue;
 

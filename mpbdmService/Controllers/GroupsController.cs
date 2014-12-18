@@ -8,6 +8,7 @@ using mpbdmService.DataObjects;
 using mpbdmService.Models;
 using Microsoft.WindowsAzure.Mobile.Service.Security;
 using mpbdmService.DomainManager;
+using System;
 
 namespace mpbdmService.Controllers
 {
@@ -17,10 +18,10 @@ namespace mpbdmService.Controllers
         protected override void Initialize(HttpControllerContext controllerContext)
         {
             base.Initialize(controllerContext);
-            mpbdmContext context = new mpbdmContext();
-            DomainManager = new EntityDomainManager<Groups>(context, Request, Services );
+            db = new mpbdmContext<Guid>();
+            DomainManager = new EntityDomainManager<Groups>(db, Request, Services );
         }
-        mpbdmContext db = new mpbdmContext();
+        mpbdmContext<Guid> db;
 
 
         // GET tables/Groups

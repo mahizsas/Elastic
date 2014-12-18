@@ -6,7 +6,6 @@ using mpbdmService.DTO;
 using mpbdmService.Models;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity.Core.Metadata.Edm;
 using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net.Http;
@@ -24,10 +23,15 @@ namespace mpbdmService.DomainManager
         public IPrincipal User;
         private EntityDomainManager<Groups> domainManager;
         
-        public GroupsDomainManager( mpbdmContext context , HttpRequestMessage request , ApiServices services ) 
+        public GroupsDomainManager( mpbdmContext<Guid> context , HttpRequestMessage request , ApiServices services ) 
                     : base ( context , request , services , true )
         {
-            domainManager = new EntityDomainManager<Groups>(context, Request, Services, true);
+            domainManager = new EntityDomainManager<Groups>(context, request, services , true);
+        }
+
+        public void setContext(mpbdmContext<Guid> context){
+            this.Context = context;
+            domainManager.Context = context;
         }
 
         public override IQueryable<MobileGroup> Query()
@@ -51,6 +55,11 @@ namespace mpbdmService.DomainManager
 
         public override System.Threading.Tasks.Task<bool> DeleteAsync(string id)
         {
+            IQueryable<Contacts> query = Context.Set<Contacts>().Where(s=>s.GroupsID == id);
+            foreach (Contacts cont in query)
+            {
+                cont.Deleted = true;
+            }
             return base.DeleteItemAsync(id);
         }
 
@@ -61,19 +70,20 @@ namespace mpbdmService.DomainManager
 
         public override async System.Threading.Tasks.Task<MobileGroup> UpdateAsync(string id, Delta<MobileGroup> patch)
         {
-            Groups data = await this.Context.Set<Groups>().FindAsync(id);
-
-            MobileGroup mobgroup = Mapper.Map<Groups , MobileGroup>(data);
-
+            // This must Go away Propably with an AutoMapper Custom function 
+            // Must try to map patches accordingly!
             IEnumerable<string> names = patch.GetChangedPropertyNames();
-            var np = new Delta<Groups>( );
-            foreach( string name in names ){
+            var np = new Delta<Groups>();
+            foreach (string name in names)
+            {
                 object obj;
-                patch.TryGetPropertyValue(name,out obj);
-                np.TrySetPropertyValue(name , obj);
+                patch.TryGetPropertyValue(name, out obj);
+                np.TrySetPropertyValue(name, obj);
             }
-            await domainManager.UpdateAsync(id , np);
-            
+            ///////////////////////////////////////////////////
+            await domainManager.UpdateAsync(id, np);
+
+            Groups data = await this.Context.Set<Groups>().FindAsync(id);
             return Mapper.Map<MobileGroup>(data);
         }
 
@@ -84,8 +94,7 @@ namespace mpbdmService.DomainManager
             Mapper.Map<MobileGroup, Groups>(data, newData);
 
             var user = User as ServiceUser;
-            if (data.Id == null)
-            {
+            if (data.Id == null) { 
                 newData.Id = Guid.NewGuid().ToString();
             }
             else
@@ -96,7 +105,7 @@ namespace mpbdmService.DomainManager
             newData.Visible = true;
 
             await domainManager.InsertAsync(newData);
-
+          
             return Mapper.Map<MobileGroup>(newData);
         }
     }
