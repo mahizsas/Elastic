@@ -28,7 +28,7 @@ namespace mpbdmService.Controllers
         {
             string shardKey = Sharding.FindShard(User);
             db = new mpbdmContext<Guid>(WebApiConfig.ShardingObj.ShardMap, new Guid(shardKey), WebApiConfig.ShardingObj.connstring);
-            ((GroupsDomainManager)DomainManager).Context = db;
+            ((GroupsDomainManager)DomainManager).setContext(db);
             ((GroupsDomainManager)DomainManager).User = User;
             return shardKey;
         }

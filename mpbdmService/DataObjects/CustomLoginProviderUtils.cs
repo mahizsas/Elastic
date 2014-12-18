@@ -33,6 +33,7 @@ namespace mpbdmService.DataObjects
 
     public class RegistrationRequest
     {
+        //Old only for consistensy
         public String username { get; set; }
         public String password { get; set; }
         public String repass { get; set; }
