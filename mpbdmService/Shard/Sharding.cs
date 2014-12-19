@@ -34,7 +34,7 @@ namespace mpbdmService.ElasticScale
     public class Sharding
     {
 
-        public static string server = "tcp:hx7y5ohy6t.database.windows.net,1433";
+        public static string server = "tcp:xvgrmio1y8.database.windows.net,1433";//ConfigurationManager.ConnectionStrings["ElasticServer"].ToString();
         public static string shardmapmgrdb = "shardmap";
         public static string connectionString = ConfigurationManager.ConnectionStrings["ElasticConnectionString"].ToString();
 
@@ -103,9 +103,9 @@ namespace mpbdmService.ElasticScale
 
             initDd("shard0");
             initDd("shard1");
-            initDd("shard2");
-            initDd("shard3");
-            initDd("shard4"); 
+            //initDd("shard2");
+            //initDd("shard3");
+            //initDd("shard4"); 
         }
         private void initDd(string database)
         {
