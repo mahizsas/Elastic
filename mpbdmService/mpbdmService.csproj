@@ -107,6 +107,10 @@
     <Reference Include="Microsoft.WindowsAzure.Storage">
       <HintPath>..\packages\WindowsAzure.Storage.3.1.0.1\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="NPOI">
       <HintPath>..\packages\NPOI.2.0.6\lib\net40\NPOI.dll</HintPath>
     </Reference>
@@ -118,6 +122,15 @@
     </Reference>
     <Reference Include="NPOI.OpenXmlFormats">
       <HintPath>..\packages\NPOI.2.0.6\lib\net40\NPOI.OpenXmlFormats.dll</HintPath>
+    </Reference>
+    <Reference Include="PayPal">
+      <HintPath>..\packages\PayPal.1.1.0\lib\net45\PayPal.dll</HintPath>
+    </Reference>
+    <Reference Include="PayPalCoreSDK">
+      <HintPath>..\packages\PayPalCoreSDK.1.6.0\lib\net45\PayPalCoreSDK.dll</HintPath>
+    </Reference>
+    <Reference Include="PayPalMerchantSDK">
+      <HintPath>..\packages\PayPalMerchantSDK.2.13.117\lib\net20\PayPalMerchantSDK.dll</HintPath>
     </Reference>
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
@@ -161,9 +174,6 @@
     </Reference>
     <Reference Include="Owin">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Http.Owin">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Owin.5.2.2\lib\net45\System.Web.Http.Owin.dll</HintPath>
@@ -227,6 +237,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\CoinsController.cs" />
     <Compile Include="Controllers\CompaniesController.cs" />
     <Compile Include="Controllers\ContactsController.cs" />
     <Compile Include="Controllers\CustomChangePassController.cs" />
@@ -235,6 +246,8 @@
     <Compile Include="Controllers\GroupsController.cs" />
     <Compile Include="Controllers\MobileFavoriteController.cs" />
     <Compile Include="Controllers\MobileGroupController.cs" />
+    <Compile Include="Controllers\PaypalTransactionController.cs" />
+    <Compile Include="Controllers\MobileTransactionsController.cs" />
     <Compile Include="Controllers\UploadController.cs" />
     <Compile Include="Controllers\UploadImageController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
@@ -245,11 +258,15 @@
     <Compile Include="DataObjects\CustomLoginProvides.cs" />
     <Compile Include="DataObjects\Favorites.cs" />
     <Compile Include="DataObjects\Groups.cs" />
+    <Compile Include="DataObjects\Subscriptions.cs" />
+    <Compile Include="DataObjects\Transactions.cs" />
     <Compile Include="DataObjects\Users.cs" />
+    <Compile Include="DomainManager\TransactionsDomainManager.cs" />
     <Compile Include="DomainManager\FavoritesDomainManager.cs" />
     <Compile Include="DomainManager\GroupsDomainManager.cs" />
     <Compile Include="DTO\MobileFavorites.cs" />
     <Compile Include="DTO\MobileGroup.cs" />
+    <Compile Include="DTO\MobileTransactions.cs" />
     <Compile Include="Models\mpbdmContext.cs" />
     <Compile Include="Photo\AzureBlobMultipartFormDataStreamProvider.cs" />
     <Compile Include="Photo\PhotoActionResult.cs" />

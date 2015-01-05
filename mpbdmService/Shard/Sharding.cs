@@ -40,6 +40,7 @@ namespace mpbdmService.ElasticScale
 
         public  string connstring = "";
         private const string sharmapName = "mpbdmService";
+        private static int PER_SHARD = 10;
         public ShardMapManager ShardMapManager { get; private set; }
 
         public ListShardMap<Guid> ShardMap { get; private set; }
@@ -58,7 +59,7 @@ namespace mpbdmService.ElasticScale
             
             IEnumerable<Shard> shards = ShardMap.GetShards();
             foreach( Shard temp in shards ){
-                if (ShardMap.GetMappings(temp).Count < 3)
+                if (ShardMap.GetMappings(temp).Count < PER_SHARD)
                 {
                     return temp;
                 }
@@ -103,7 +104,7 @@ namespace mpbdmService.ElasticScale
 
             initDd("shard0");
             initDd("shard1");
-            //initDd("shard2");
+            initDd("shard2");
             //initDd("shard3");
             //initDd("shard4"); 
         }

@@ -45,20 +45,20 @@ namespace mpbdmService.Controllers
             foreach (var file in provider.FileData)
             {
                 var blob = await photoContainer.GetBlobReferenceFromServerAsync(file.LocalFileName);
-                var fileNameGuid = Guid.NewGuid().ToString();
-                ICloudBlob newBlob = null;
-                if (blob is CloudBlockBlob)
-                {
-                    newBlob = photoContainer.GetBlockBlobReference(fileNameGuid);
-                }
-                else
-                {
-                    newBlob = photoContainer.GetPageBlobReference(fileNameGuid);
-                }
-                await newBlob.StartCopyFromBlobAsync(blob.Uri);
-                blob.Delete();
-                await newBlob.FetchAttributesAsync();
-                string url = newBlob.Uri.ToString();
+                //var fileNameGuid = Guid.NewGuid().ToString();
+                //ICloudBlob newBlob = null;
+                //if (blob is CloudBlockBlob)
+                //{
+                //    newBlob = photoContainer.GetBlockBlobReference(fileNameGuid);
+                //}
+                //else
+                //{
+                //    newBlob = photoContainer.GetPageBlobReference(fileNameGuid);
+                //}
+                //await newBlob.StartCopyFromBlobAsync(blob.Uri);
+                //blob.Delete();
+                //await newBlob.FetchAttributesAsync();
+                //string url = newBlob.Uri.ToString();
 
                 //// DELETING ANY OLD BLOBS
                 //if (userEntity.ImageUrl != null)
@@ -68,7 +68,7 @@ namespace mpbdmService.Controllers
                 //}
                 ////////////////////////////
                 // UPDATE imageUrl of user
-                userEntity.ImageUrl = url;
+                userEntity.ImageUrl = file.LocalFileName;
 
                 try
                 {
@@ -89,7 +89,7 @@ namespace mpbdmService.Controllers
             // Security issue check company
             Contacts contact = db.Set<Contacts>().Include("Groups").Where(s=>s.Id == contactId && s.Groups.CompaniesID == shardKey ).FirstOrDefault();
             if( contact == null ){
-                this.Request.CreateResponse(HttpStatusCode.BadRequest,"Contact doesnt't exist!");
+                return this.Request.CreateResponse(HttpStatusCode.BadRequest,"Contact doesnt't exist!");
             }
 
             CloudStorageAccount acc = CloudStorageAccount.Parse(ConfigurationManager.ConnectionStrings["Azure"].ConnectionString);
@@ -104,22 +104,24 @@ namespace mpbdmService.Controllers
 
             foreach (var file in provider.FileData)
             {
+                
                 //the LocalFileName is going to be the absolute Uri of the blob (see GetStream)
                 //use it to get the blob info to return to the client
                 var blob = await photoContainer.GetBlobReferenceFromServerAsync(file.LocalFileName);
-                var fileNameGuid = Guid.NewGuid().ToString();
+                
+                //var fileNameGuid = Guid.NewGuid().ToString();
                 // Copy to get new URL
-                ICloudBlob newBlob = null;
-                if (blob is CloudBlockBlob)
-                {
-                    newBlob = photoContainer.GetBlockBlobReference(fileNameGuid);
-                }
-                else
-                {
-                    newBlob = photoContainer.GetPageBlobReference(fileNameGuid);
-                }
-                //Initiate blob copy
-                await newBlob.StartCopyFromBlobAsync(blob.Uri);
+                //ICloudBlob newBlob = null;
+                //if (blob is CloudBlockBlob)
+                //{
+                //    newBlob = photoContainer.GetBlockBlobReference(fileNameGuid);
+                //}
+                //else
+                //{
+                //    newBlob = photoContainer.GetPageBlobReference(fileNameGuid);
+                //}
+                ////Initiate blob copy
+                //await newBlob.StartCopyFromBlobAsync(blob.Uri);
                 ////Now wait in the loop for the copy operation to finish
                 //while (true)
                 //{
@@ -131,11 +133,11 @@ namespace mpbdmService.Controllers
                 //    //Sleep for a second may be
                 //    System.Threading.Thread.Sleep(1000);
                 //}
-                blob.Delete();
+                //blob.Delete();
 
-                await newBlob.FetchAttributesAsync();
+                //await newBlob.FetchAttributesAsync();
 
-                string url = newBlob.Uri.ToString();
+                //string url = newBlob.Uri.ToString();
                 //// DELETING ANY OLD BLOBS
                 //if (contact.ImageUrl != null)
                 //{
@@ -143,7 +145,7 @@ namespace mpbdmService.Controllers
                 //    oldBlob.Delete();
                 //}
                 ////////////////////////////
-                contact.ImageUrl = url;
+                contact.ImageUrl = file.LocalFileName;
 
                 try
                 {

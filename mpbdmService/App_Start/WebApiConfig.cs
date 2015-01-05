@@ -43,6 +43,7 @@ namespace mpbdmService
             {
                 cfg.CreateMap<Groups, MobileGroup>().ReverseMap();
                 cfg.CreateMap<Favorites, MobileFavorites>().ReverseMap();
+                cfg.CreateMap<Transactions, MobileTransactions>().ReverseMap();
             });
 
             

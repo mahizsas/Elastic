@@ -43,6 +43,8 @@ namespace mpbdmService.Models
         public DbSet<Users> Users { get; set; }
 
         public DbSet<Account> Accounts { get; set; }
+        public DbSet<Transactions> Transactions { get; set; }
+        public DbSet<Subscriptions> Subscriptions { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -71,7 +73,7 @@ namespace mpbdmService.Models
         private static string SetInitializerForConnection(string connnectionString)
         {
             // We want existence checks so that the schema can get deployed
-            Database.SetInitializer<mpbdmContext<Guid>>(new CreateDatabaseIfNotExists<mpbdmContext<Guid>>());
+            Database.SetInitializer<mpbdmContext<Guid>>(new ClearDatabaseSchemaIfModelChanges<mpbdmContext<Guid>>());// CREATE DB IF NOT EXISTS
             return connnectionString;
         }
 

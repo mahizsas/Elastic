@@ -13,9 +13,12 @@ using System.Security.Claims;
 using Newtonsoft.Json.Linq;
 using System.Security.Principal;
 using mpbdmService.ElasticScale;
+using System.Net.Http;
+using System.Net;
 
 namespace mpbdmService.Controllers
 {
+    [RoutePrefix("tables/Companies")]
     [AuthorizeLevel(AuthorizationLevel.User)] 
     public class CompaniesController : TableController<Companies>
     {
@@ -65,6 +68,28 @@ namespace mpbdmService.Controllers
         {
             getShardKey();
             return DeleteAsync(id);
+        }
+
+
+        [Route("coins")]
+        public HttpResponseMessage GetCoins()
+        {
+
+            string shardKey = Sharding.FindShard(User);
+            mpbdmContext<Guid> db = new mpbdmContext<Guid>(WebApiConfig.ShardingObj.ShardMap, new Guid(shardKey), WebApiConfig.ShardingObj.connstring);
+
+            var coins = getRecieverMoney(shardKey, db);
+            return Request.CreateResponse(HttpStatusCode.OK, coins);
+        }
+        public static double getRecieverMoney(string shardKey, mpbdmContext<Guid> db)
+        {
+            var res = db.Transactions.Where(s => s.Status == "Completed" && (s.Sender == shardKey || s.Reciever == shardKey)).OrderByDescending(s => s.UpdatedAt).FirstOrDefault();
+            if (res != null)
+            {
+                if (res.Reciever == shardKey) return res.RecieverMoney;
+                else return res.SenderMoney;
+            }
+            return 0.0;
         }
     }
 }
